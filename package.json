@@ -1,0 +1,28 @@
+{
+  "name": "ims",
+  "version": "1.0.0",
+  "description": "Integrated Management System",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --exec babel-node src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/do1git/ims2021.git"
+  },
+  "author": "Duwon Kim",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/do1git/ims2021/issues"
+  },
+  "homepage": "https://github.com/do1git/ims2021#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.14.8",
+    "@babel/node": "^7.14.7",
+    "@babel/preset-env": "^7.14.8",
+    "nodemon": "^2.0.12"
+  }
+}
