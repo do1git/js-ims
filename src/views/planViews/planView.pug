@@ -1,0 +1,11 @@
+extends ../base
+
+block content 
+    h1 출고장
+    div
+        h2 #{plan.model.name}
+        span 출고일 #{plan.planned_outbound_date}
+    hr
+    div 
+        a(href=`/plans/${plan._id}/done`)
+            span 출고하기 &rarr; 

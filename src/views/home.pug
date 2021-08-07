@@ -1,0 +1,10 @@
+extends base
+include mixins/plan
+
+block content 
+    h1 제작해야 할 모델들 (출고 불가능)
+    
+    each plan in plans
+        +plan(plan)
+    else 
+        p 아무 일정이 없습니다 ㅠ ㅅ ㅠ

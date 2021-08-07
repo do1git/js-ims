@@ -1,0 +1,15 @@
+extends ../base
+
+block content 
+    h1 모델명 수정
+    form(method="POST")
+        label(for="model") 모델명
+        input(name="name",placeholder="15RAS-DJ2",type="text",required,id="model",value=`${pump.name}`)
+        input(name="user",placeholder="Lindr",type="text",required,value=`${pump.user}`)
+        input(name="flowRate",placeholder="15",type="text",required,value=`${pump.flowRate}`)
+        input(name="operation",placeholder="R",type="text",required,value=`${pump.operation}`)
+        input(name="purpose",placeholder="A",type="text",required,value=`${pump.purpose}`)
+        input(name="structure",placeholder="S",type="text",required,value=`${pump.structure}`)
+        input(name="coating",placeholder="non",type="text",required,value=`${pump.coating}`)
+        input(type="submit",value="등록하기")
+    

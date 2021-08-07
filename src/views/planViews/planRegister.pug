@@ -1,0 +1,24 @@
+extends ../base
+include ../mixins/pump
+
+block content 
+
+    h2 다음과 같은 모델로 등록하기
+    +pump(pump)
+    
+
+    form(method="POST")
+        label(for="approved_id") 승인번호
+        input(id="approved_id",name="approved_id",type="text")
+        label(for="ordered_date") 최초 주문일
+        input(id="ordered_date",name="ordered_date",type="date")
+        label(for="planned_manufacturing_date") 생산 계획일
+        input(id="planned_manufacturing_date",name="planned_manufacturing_date",type="date",value=Date.now)
+        label(for="planned_outbound_date") 예상 출고일
+        input(id="planned_outbound_date",name="planned_outbound_date",type="date",value=Date.now)
+        label(for="manufacturing_Def") 생산부서
+        input(id="manufacturing_Def",name="manufacturing_Def",type="text")
+        label(for="memo") 특이 기록사항
+        input(id="memo",name="memo",type="text")       
+        input(type="submit",value="등록하기")         
+            

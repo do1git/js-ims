@@ -1,0 +1,11 @@
+extends ../base
+
+block content 
+    h1 대표사진은 선택해주세요!
+    form(method="POST",action=`/plans/${plan._id}/done2`)
+        each file in plan.filePath
+            div 
+                img(src=`/${file}`, width="100px",height="100px")
+                input(type="radio",name="mainPic",id=file,value=file)
+        input(type="submit",value="제출하기")
+            

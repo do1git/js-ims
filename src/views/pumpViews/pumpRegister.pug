@@ -1,0 +1,14 @@
+extends ../base
+
+block content 
+    //- ,enctype="multipart/form-data"
+    form(method="POST")
+        label(for="model") 모델명
+        input(name="name",placeholder="15RAS-DJ2",type="text",required,id="model")
+        input(name="user",placeholder="Lindr",type="text",required)
+        input(name="flowRate",placeholder="15",type="text",required)
+        input(name="operation",placeholder="R",type="text",required)
+        input(name="purpose",placeholder="A",type="text",required)
+        input(name="structure",placeholder="S",type="text",required)
+        input(name="coating",placeholder="non",type="text",required)
+        input(type="submit",value="등록하기")

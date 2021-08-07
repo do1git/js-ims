@@ -1,0 +1,14 @@
+extends base
+include mixins/pump
+
+block content 
+    a(href="pumps/register")
+        div 펌프 등록하기 
+    hr
+
+    h2 등록된 펌프 목록
+
+    each pump in pumps 
+        +pump(pump)
+    else 
+        p not yet uploaded

@@ -1,0 +1,14 @@
+extends ../base
+
+block content 
+    h2 제품명   
+        div
+        h2 #{plan.model.name}
+        span 출고일 #{plan.planned_outbound_date}
+    hr
+
+    h3 위 모델에 대한 사진등록
+    form(method="POST",enctype="multipart/form-data")
+        label(for="done_photo")
+        input(id="done_photo",name="photos",type="file",accept="image/*",multiple="multiple") 
+        input(type="submit",value="사진 등록하기")

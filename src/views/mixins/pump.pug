@@ -1,0 +1,7 @@
+mixin pump(info)
+    a(href=`/pumps/${info.id}`)    
+        div     
+            div=info.name 
+            div #{info.flowRate}Lpm
+            div 사용업체:#{info.user}
+    hr
