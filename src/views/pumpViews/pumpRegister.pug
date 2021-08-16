@@ -3,12 +3,52 @@ extends ../base
 block content 
     //- ,enctype="multipart/form-data"
     form(method="POST")
-        label(for="model") 모델명
-        input(name="name",placeholder="15RAS-DJ2",type="text",required,id="model")
-        input(name="user",placeholder="Lindr",type="text",required)
-        input(name="flowRate",placeholder="15",type="text",required)
-        input(name="operation",placeholder="R",type="text",required)
-        input(name="purpose",placeholder="A",type="text",required)
-        input(name="structure",placeholder="S",type="text",required)
-        input(name="coating",placeholder="non",type="text",required)
+        div.form_main
+            span 모델명: 
+            span 10RNS-HS1
+        hr
+        div 
+            label(for="free_flowRate") 무부하 유량
+            input(name="free_flowRate",placeholder="10",type="text",required,id="free_flowRate")
+        div 
+            label(for="pump_model") 모델
+            input(name="code",placeholder="RNS",type="text",required,id="pump_model")
+        
+        div 
+            label(for="user") 업체명
+            input(name="user",type="text",required,id="user")
+        
+        div 
+            label(for="version") 버전
+            input(name="version",value="1.0.0",type="text",required,id="version")
+        
+        div 
+            span 모터 전류타입
+            input(name="current",required,value="ac",type="radio",id="current_ac")
+            label(for="current_ac") AC
+            input(name="current",value="bdc",type="radio",id="current_bdc")
+            label(for="current_bdc") BDC
+            input(name="current",value="bldc",type="radio",id="current_bldc")
+            label(for="current_bldc") BLDC
+            
+        div
+            span 코팅 여부
+            input(name="coating",value="PTFE",required,type="radio",id="ptfe")
+            label(for="ptfe") PTFE
+            input(name="coating",value="anodize",type="radio",id="anodize")
+            label(for="anodize") 블랙 아노다이징
+            input(name="coating",value="none",type="radio",id="nonCoating")
+            label(for="nonCoating") non
+            
+        div
+            span 국내 / 해외
+            input(name="domestic",value="true",required,type="radio",id="domestic")
+            label(for="domestic") 국내
+            input(name="domestic",value="false",type="radio",id="oversea")
+            label(for="oversea") 해외
+
+        
+        if errorMessage 
+            span.spanError=errorMessage
+
         input(type="submit",value="등록하기")

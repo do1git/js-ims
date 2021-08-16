@@ -1,0 +1,17 @@
+.home {
+  display: flex;
+  flex-direction: column;
+}
+
+.banner {
+  font-size: 25px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.home__list {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

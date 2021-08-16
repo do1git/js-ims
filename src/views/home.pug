@@ -1,10 +1,12 @@
 extends base
-include mixins/plan
+include mixins/planMixin
 
 block content 
-    h1 제작해야 할 모델들 (출고 불가능)
+    .home 
+        .home__main.banner &rarr; 생산예정 모델 (출고 불가능)
     
-    each plan in plans
-        +plan(plan)
-    else 
-        p 아무 일정이 없습니다 ㅠ ㅅ ㅠ
+        .home__list
+            each plan in plans_k
+                +plan(plan)
+            else 
+                p 아무 일정이 없습니다 ㅠ ㅅ ㅠ

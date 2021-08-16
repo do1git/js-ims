@@ -1,14 +1,40 @@
 extends base
-include mixins/pump
+include mixins/pumpMixin
 
 block content 
-    a(href="pumps/register")
-        div 펌프 등록하기 
+    form(method="GET")
+        .manage__searchBar 
+            input.manage__searchBar__box(type="text",name="keyword")
+            input.manage__searchBar__btn(type="submit",value="검색")
+        hr
+        div.form--small
+            label(for="user") 업체명
+            input(name="user",type="text",id="user")
+        
+        div.form--small
+            span 모터 전류타입
+            input(name="current",value="ac",type="radio",id="current_ac")
+            label(for="current_ac") AC
+            input(name="current",value="bdc",type="radio",id="current_bdc")
+            label(for="current_bdc") BDC
+            input(name="current",value="bldc",type="radio",id="current_bldc")
+            label(for="current_bldc") BLDC
     hr
+    hr
+    div.manage__list
+        if(search)
+            .manage__list__container 
+                .manage__list__container__new 
+                    span 원하는 펌프가 없습니까? 
+                    a(href="pumps/register")
+                        span 펌프 등록하기 &rarr;
+                each pump in pumps 
+                    +pump(pump) 
 
-    h2 등록된 펌프 목록
-
-    each pump in pumps 
-        +pump(pump)
-    else 
-        p not yet uploaded
+        else
+            each pump in pumps 
+                +pump(pump)
+            else 
+                p 등록된 펌프가 없습니다
+                a(href="pumps/register")
+                    span 펌프 등록하기 &rarr;

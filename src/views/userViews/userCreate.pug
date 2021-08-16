@@ -1,0 +1,52 @@
+extends ../base
+
+block content 
+    h2 새 직원을 추가하세요
+    form(method="POST",enctype="multipart/form-data")
+        label(for="avatar") 사진
+        input(id="avatar",name="avatar",type="file",accept="image/*")
+        label(for="name3") 이름 (필수)
+        input(required,id="name3",name="name3",type="text")
+        label(for="grade") 직급 (필수)
+        input(required,id="grade",name="grade",list="gradeList",placeholder="직급을 선택하세요")
+        label(for="department") 부서 (필수)
+        input(required,id="department",name="department",list="departmentList",placeholder="부서를 선택하세요")
+        label(for="email") email
+        input(id="email",name="email",type="email")
+        label(for="mobile") 휴대폰 전화번호 (필수)
+        input(required,id="mobile",name="mobile",type="tel",list="def",placeholder="010-1111-1111")
+        
+        label(for="birthDay") 생일 (4자리 입력)
+        input(required,id="birthDay",minlength="4",maxlength="4",placeholder="0211",name="birthDay",type="text")
+     
+        div 일정 수립권한 (사진업로드 미포함) (필수)
+            input(id="permission_plan_true",name="permission_plan",type="radio",value="true")       
+            label(for="permission_plan_true") 허용
+            input(checked,id="permission_plan_false",name="permission_plan",type="radio",value="false")       
+            label(for="permission_plan_false") 허용하지 않음
+        div 유저(직원) 관리권한 (직원 등록/편집) (필수)
+            input(id="permission_user_true",name="permission_user",type="radio",value="true")       
+            label(for="permission_user_true") 허용
+            input(checked,id="permission_user_false",name="permission_user",type="radio",value="false")       
+            label(for="permission_user_false") 허용하지 않음
+        input(type="submit",value="등록하기")
+        
+        datalist#departmentList 
+            option(value="생산부-미니")
+            option(value="생산부-대형")
+            option(value="생산부-다이아프램")
+            option(value="통합관리부")
+            option(value="연구부")
+            
+        datalist#gradeList
+            option(value="사장")
+            option(value="부장")
+            option(value="차장")
+            option(value="과장")
+            option(value="대리")
+            option(value="주임")
+            option(value="사원")
+            option(value="아르바이트")
+
+
+

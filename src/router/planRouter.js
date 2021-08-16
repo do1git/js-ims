@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getDoneRegister,
+  getPlanEdit,
   getPlanRegister,
   getPlanView,
   postDoneRegister,
@@ -21,5 +22,6 @@ planRouter
   .get(getDoneRegister)
   .post(uploadFiles.array("photos", 10), postDoneRegister);
 planRouter.route("/:id([0-9a-f]{24})/done2").post(postDoneRegister2);
+planRouter.route("/:id([0-9a-f]{24})/edit").get(getPlanEdit);
 
 export default planRouter;

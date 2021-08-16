@@ -1,11 +1,75 @@
 extends ../base
-
+include ../mixins/pumpMixin
 block content 
-    h1 출고장
+    h1 제품상태-> #{plan.status}
     div
+        img(src=`/${plan.model.mainPic}` ,width="200px",height="200px")
         h2 #{plan.model.name}
         span 출고일 #{plan.planned_outbound_date}
     hr
-    div 
+
+block content 
+    .planView__banner.banner &rarr; 출고계획 상세
+    
+    if plan.filePaths 
+        .planView__pictures 
+            img(src=plan.thumbnail)
+            each path in plan.filePaths
+                img(src=path)
+    
+    .planView__planInfo 
+        .planView__planInfo__status 
+            span 현재상태: 
+            span #{plan.status}
+        .planView__planInfo__approved_id 
+            span 승인번호: 
+            span #{plan.approved_id}
+        .planView__planInfo__status 
+            span 현재상태: 
+            span #{plan.status}
+        .planView__planInfo__quantity 
+            span 수량: 
+            span #{plan.quantity}
+
+        .planView__planInfo__ordered_date 
+            span 주문 접수일: 
+            span #{plan.ordered_date}
+        .planView__planInfo__planned_manufacturing_date 
+            span 생산 예정일: 
+            span #{plan.planned_manufacturing_date}
+        .planView__planInfo__manufacturing_date 
+            span 실제 생산일: 
+            span #{plan.manufacturing_date}
+        .planView__planInfo__planned_outbound_date 
+            span 출고 예정일: 
+            span #{plan.planned_outbound_date}
+        .planView__planInfo__outbound_date 
+            span 실제 생산일: 
+            span #{plan.outbound_date}
+
+        .planView__planInfo__manufacturing_department 
+            span 생산 담당부서: 
+            span #{plan.manufacturing_department}
+        .planView__planInfo__member 
+            span 제작 참여직원: 
+            span #{plan.member}
+        .planView__planInfo__package 
+            span 포장: 
+            span #{plan.package}
+        .planView__planInfo__memo 
+            span 실제 생산일: 
+            span #{plan.memo}
+
+
+    .planView__pumpInfo 
+        +pump(plan.model)
+        
+    div.planView__tools 
         a(href=`/plans/${plan._id}/done`)
             span 출고하기 &rarr; 
+        br
+        a(href=`/plans/${plan._id}/edit`)
+            span 수정하기 &rarr; 
+
+    
+    .planView__history 

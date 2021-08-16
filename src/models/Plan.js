@@ -2,16 +2,27 @@ import mongoose from "mongoose";
 
 const PlanSchema = new mongoose.Schema({
   model: { type: mongoose.Schema.Types.ObjectId, required: true, ref: "Pump" },
-  status: { type: String, default: "wait" },
+  reference: [{ type: mongoose.Schema.Types.ObjectId, ref: "Plan" }],
+
+  status: { type: String, default: "wait", required: true },
+
   approved_id: { type: String, required: true },
+  quantity: { type: Number, required: true },
+
   ordered_date: { type: Date },
-  planned_manufaturing_date: { type: Date },
-  manufactured_date: { type: Date },
+  planned_manufacturing_date: { type: Date },
+  manufacturing_date: { type: Date },
   planned_outbound_date: { type: Date },
   outbound_date: { type: Date },
-  manufaturing_Def: { type: String },
+
+  manufacturing_department: { type: String, required: true },
   memo: { type: String },
-  filePath: [{ type: String }],
+
+  filePaths: [{ type: String }],
+  thumbnail: { type: String },
+
+  member: [{ type: String }],
+  packaging: { type: String, required: true },
 });
 
 const Plan = mongoose.model("Plan", PlanSchema);

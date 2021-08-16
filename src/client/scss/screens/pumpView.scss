@@ -1,0 +1,36 @@
+.pumpView__info {
+  background-color: $island;
+  border-radius: $island_border_radius;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.pumpView__info div {
+  margin: 8px 0;
+}
+.pumpView__info__name {
+  font-size: 30px;
+  font-weight: 700;
+}
+.pumpView__info__user span:nth-child(2),
+.pumpView__info__current,
+.pumpView__info__domestic,
+.pumpView__info__coating span:nth-child(2) {
+  font-weight: 700;
+}
+
+.pumpView__tools {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pumpView__tools a div {
+  height: 2em;
+  border: 1px black solid;
+  border-radius: $island_border_radius;
+  padding: 0px 5px;
+  margin: 0px 5px;
+  background-color: $island;
+}

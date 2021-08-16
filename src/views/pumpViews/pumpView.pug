@@ -1,17 +1,26 @@
 extends ../base
 
 block content 
-    h1 모델명:#{pump.name}
-    span 무부하 유량:#{pump.flowRate}Lpm
-    br
-    span 종류:#{pump.operation}
-    br
-    span 사용업체:#{pump.user}
+    .pumpView__info 
+        .pumpView__info__name=pump.name 
+        .pumpView__info__user 
+            span for 
+            span #{pump.user} 
+        .pumpView__info__current=pump.current
+        .pumpView__info__coating 
+            span 코팅여부: 
+            span #{pump.coating}
+        if pump.domestic 
+            .pumpView__info__domestic 국내용
+        else 
+            .pumpView__info__domestic 해외용
+        .pumpView__info__version 개발단계: #{pump.version} 
     hr
-    a(href=`${pump.id}/edit`) 수정하기&rarr;
-    br
-    //-a(href=`${pump.id}/delete`) 삭제하기&rarr;
-    span 삭제하기 (불가예정)&rarr;
-    br
-    a(href=`/plans/${pump.id}/register`) 출고계획 등록하기&rarr;
-        
+    .pumpView__tools
+        a(href=`${pump.id}/edit`)
+            div 수정하기 &rarr;
+
+        a(href=`/plans/${pump.id}/register`)
+            div 출고계획 등록하기&rarr;
+    
+    .pumpView__history 

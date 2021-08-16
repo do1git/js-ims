@@ -51,5 +51,5 @@ name:
 grade: 사장 부장 과장 대리 주임 사원 기간제
 department:
 email:
-phoneNum:
+mobile:
 permission:[] planUpload userEdit registerUser

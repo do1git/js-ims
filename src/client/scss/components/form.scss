@@ -1,0 +1,31 @@
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+
+form div {
+  margin: 10px 0px;
+  display: flex;
+  justify-content: center;
+}
+form label {
+  margin-right: 10px;
+}
+form input[type="submit"] {
+  margin-top: 20px;
+  width: 50%;
+}
+.spanError {
+  color: red;
+  font-weight: 800;
+}
+.form_main {
+  font-size: 20px;
+  font-weight: 700;
+}
+.form--small {
+  font-size: 12px;
+}

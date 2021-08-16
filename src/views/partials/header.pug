@@ -1,9 +1,8 @@
 header 
     nav 
-        div
-            a.header__logo(href="/")
-                img(src="../static/imgElement/g&m logo.png")
-                span IMS 
+    
+        a.header__logo(href="/")
+            img(src="/static/statics/gnmLogo.png") 
         
         div.header__menu
             a.header__menu__plan(href="/")
@@ -15,8 +14,11 @@ header
             a.header__menu__manage(href="/manage")
                 .header__memu__manage__box 
                     i.fas.fa-edit
-            a.header__menu__user(href="#")
-                .header__memu__user__box 
-                    i.fas.fa-user     
+            a.header__menu__menu(href="/etc")
+                .header__memu__menu__box 
+                    i.fas.fa-bars     
+        
 
         div.header__user 
+            a(href=`users/${loggedInUser._id}`)
+                img(src=loggedInUser.avatar,width="30px")

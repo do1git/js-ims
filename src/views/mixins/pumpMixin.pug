@@ -1,0 +1,12 @@
+mixin pump(info)
+    a(href=`/pumps/${info.id}`)    
+
+        .pumpMixin__container 
+            span=info.name 
+            span /
+            span=info.user 
+            span /
+            span=info.current 
+            span /
+            span=info.coating
+    

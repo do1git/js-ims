@@ -1,0 +1,14 @@
+mixin plan(info)
+    a(href=`/plans/${info.id}`)
+        div.planMixin__container
+            div    
+                span 생산: #{info.planned_manufacturing_date} / 출고: #{info.planned_outbound_date}
+                //-span 생산: 2021-08-15-월 / 출고: 2021-08-19-수
+            div
+                span=info.model.name 
+                span /
+                span=info.model.user 
+                span /
+                span=info.model.current 
+                span /
+                span=info.model.coating

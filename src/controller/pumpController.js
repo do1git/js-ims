@@ -5,22 +5,26 @@ export const getPumpRegister = (req, res) => {
 };
 
 export const postPumpRegister = async (req, res) => {
-  const { name, user, flowRate, operation, purpose, structure, coating } =
+  const { free_flowRate, code, user, version, current, domestic, coating } =
     req.body;
   try {
-    const newPump = await Pump.create({
-      name,
-      flowRate,
-      operation,
-      purpose,
-      structure,
-      coating,
+    await Pump.create({
+      free_flowRate,
+      code,
+      name: free_flowRate + code,
       user,
+      version,
+      current,
+      domestic,
+      coating,
+      lastEdit: Date.now(),
     });
     return res.redirect("/manage");
   } catch (error) {
     console.log(error);
-    return res.status(400).render("pumpViews/pumpRegister");
+    return res
+      .status(400)
+      .render("pumpViews/pumpRegister", { errorMessage: "< 등록오류발생 >" });
   }
 };
 export const getPumpView = async (req, res) => {
@@ -29,9 +33,9 @@ export const getPumpView = async (req, res) => {
   const pump = await Pump.findById(id);
   if (!pump) {
     return res.status(404).render("404");
-  } else {
-    return res.render("pumpViews/pumpView", { pump });
   }
+
+  return res.render("pumpViews/pumpView", { pump });
 };
 
 export const getPumpEdit = async (req, res) => {
@@ -40,29 +44,28 @@ export const getPumpEdit = async (req, res) => {
   if (!pump) {
     return res.status(404).render("404");
   }
-  /*if (String(video.owner) !== String(req.session.user._id)) {
-    return res.status(403).redirect("/");
-  }*/
   res.render("pumpViews/pumpEdit", { pump });
 };
+
 export const postPumpEdit = async (req, res) => {
   const { id } = req.params;
-  const { name, user, flowRate, operation, purpose, structure, coating } =
+  const { free_flowRate, code, user, version, current, domestic, coating } =
     req.body;
   const pump = Pump.exists({ _id: id });
-  console.log(req.body);
   if (!pump) {
-    return res.status(404).render("404");
+    return res
+      .status(404)
+      .render("404", { errorMessage: "수정할 펌프가 없습니다" });
   }
-
   await Pump.findByIdAndUpdate(id, {
-    name,
+    free_flowRate,
+    code,
     user,
-    flowRate,
-    operation,
-    purpose,
-    structure,
+    version,
+    current,
+    domestic,
     coating,
+    lastEdit: Date.now(),
   });
   return res.redirect(`/pumps/${id}`);
 };

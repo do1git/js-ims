@@ -1,0 +1,9 @@
+block content 
+    h1 G&M TECH IMS
+
+    if(errorMessage)
+        small=errorMessage
+    form(method="POST")
+        input(type="text",placeholder="전화번호",required,name="mobile")
+        input(type="password",placeholder="비밀번호",required,name="password")
+        input(type="submit",value="로그인")

@@ -1,8 +1,0 @@
-mixin plan(info)
-    a(href=`/plans/${info.id}`)
-        div 
-            span 승인번호:#{info.approved_id} / 출고예정일:#{info.planned_outbound_date}
-            br
-            span #{info.model.name} / #{info.model.user}
-            br
-            span 상태:#{info.status}
