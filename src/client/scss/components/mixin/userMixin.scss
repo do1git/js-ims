@@ -1,0 +1,21 @@
+.userList__user__profile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.userList__user__profile img {
+  width: $grid__eachSize;
+  height: auto;
+}
+.userList__user__profile__photo {
+  width: $grid__eachSize;
+  height: $grid__eachSize;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+.userList__user__profile__info {
+  font-size: 1.6rem;
+}

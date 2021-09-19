@@ -6,6 +6,9 @@ module.exports = {
   entry: {
     main: "./src/client/js/main.js",
     planRegister: "./src/client/js/planRegister.js",
+    button__blueBox: "./src/client/js/button__blueBox.js",
+    container__multiSelection__reverse:
+      "./src/client/js/container__multiSelection__reverse.js",
   },
   watch: true,
   plugins: [

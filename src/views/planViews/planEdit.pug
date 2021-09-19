@@ -1,0 +1,61 @@
+extends ../base
+include ../mixins/pumpMixin
+
+block content    
+    form(method="POST")
+    
+        div
+            span 상태
+            div
+                input(value="wait", required,id="wait",name="status",type="radio")
+                label(for="wait") wait(대기)
+                input(value="done", required,id="done",name="status",type="radio")
+                label(for="done") done(제작완료)
+                input(value="outbound", required,id="outbound",name="status",type="radio")
+                label(for="outbound") OB(출고)
+                
+        div
+            label(for="approved_id") 승인번호
+            input(value=planK.approved_id, required,id="approved_id",name="approved_id",type="text",placeholder="21001")
+        div
+            label(for="ordered_date") 주문일
+            input(value=planK.ordered_date,required,id="ordered_date",name="ordered_date",type="date")
+        div
+            label(for="planned_manufacturing_date") 계획 생신일
+            input(value=planK.planned_manufacturing_date,required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date")
+        div
+            label(for="planned_manufacturing_date") 실제 생신일
+            input(value=planK.manufacturing_date,id="manufacturing_date",name="manufacturing_date",type="date")
+        div
+            label(for="planned_outbound_date") 계획 출고일
+            input(value=planK.planned_outbound_date,required,id="planned_outbound_date",name="planned_outbound_date",type="date")
+        div
+            label(for="planned_outbound_date") 실제 출고일
+            input(value=planK.outbound_date,id="outbound_date",name="outbound_date",type="date")
+        div
+            label(for="manufacturing_department") 생산부서
+            input(value=planK.manufacturing_department,required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
+        div
+            label(for="quantity") 수량
+            input(value=planK.quantity,required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
+        div
+            label(for="package") 포장방법
+            input(value=planK.packaging,required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
+        div
+            label(for="memo") 특이 기록사항
+            input(value=planK.memo,id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
+        if errorMessage 
+            p=errorMessage
+        
+        input(type="submit",value="등록하기")
+    
+    datalist#departments
+        option(value="미니")
+        option(value="대형")
+        option(value="다이아프램")
+    datalist#packages
+        option(value="직납") 
+        option(value="택배") 
+        option(value="EMS") 
+        option(value="파레트") 
+        option(value="퀵") 

@@ -11,14 +11,19 @@ import {
   logout,
   postLogin,
 } from "../controller/userController";
+import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 
 const rootRouter = express.Router();
 
-rootRouter.route("/").get(home);
-rootRouter.route("/login").get(getLogin).post(postLogin);
-rootRouter.route("/done").get(getDoneList);
+rootRouter.route("/").all(protectorMiddleware).get(home);
+rootRouter
+  .route("/login")
+  .all(publicOnlyMiddleware)
+  .get(getLogin)
+  .post(postLogin);
+rootRouter.route("/done").all(protectorMiddleware).get(getDoneList);
 rootRouter.route("/manage").get(getManage);
-rootRouter.get("/etc", getEtc);
-rootRouter.get("/logout", logout);
+rootRouter.all(protectorMiddleware).get("/etc", getEtc);
+// rootRouter.get("/logout", logout);
 
 export default rootRouter;

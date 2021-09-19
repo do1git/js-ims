@@ -1,0 +1,17 @@
+.planMixin__container {
+  font-size: 1.6rem;
+  border: $border--black;
+  border-radius: $border__radius;
+  width: 300px;
+  padding: 0.8rem 0px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.6rem 0px;
+}
+
+.planMixin__container__user,
+.planMixin__container__date {
+  font-size: 1.2rem;
+  margin: 0.2rem 0;
+}

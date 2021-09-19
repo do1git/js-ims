@@ -1,11 +1,15 @@
 extends ../base
 
 block content 
-    h1 대표사진은 선택해주세요!
-    form(method="POST",action=`/plans/${plan._id}/done2`)
-        each file in plan.filePath
-            div 
-                img(src=`/${file}`, width="100px",height="100px")
-                input(type="radio",name="mainPic",id=file,value=file)
+
+    form.s1n2(method="POST",action=`/plans/${plan._id}/done2`)
+        div    
+            span 대표사진 1장을 선택해주세요
+        div
+            each file in plan.file_Paths
+                div
+                    label(for=file).blueBox--big--black
+                        img(src=`/${file}`, width="auto",height="100px")
+                        input(type="radio",name="mainPic",value=file,id=file)
         input(type="submit",value="제출하기")
-            
+    script(src="/static/dynamics/js/button__blueBox.js") 

@@ -1,9 +1,10 @@
 import User from "../models/User";
+import Event from "../models/Event";
 import bcrypt from "bcrypt";
 import session from "express-session";
 
-export const getEtc = (req, res) => {
-  res.render("etc");
+export const getEtc = async (req, res) => {
+  res.render("etc", { header: "목록" });
 };
 export const getUserView = async (req, res) => {
   const { id } = req.params;
@@ -13,7 +14,10 @@ export const getUserView = async (req, res) => {
       .status(404)
       .render("404", { errorMessage: "해당 유저가 없습니다" });
   }
-  return res.render("userViews/userView", { user });
+  return res.render("userViews/userView", {
+    user,
+    header: `${user.name}님의 프로필`,
+  });
 };
 
 export const getUserList = async (req, res) => {
@@ -21,16 +25,17 @@ export const getUserList = async (req, res) => {
   if (!users) {
     users = [];
   }
-  res.render("./userViews/userList", { users });
+  res.render("./userViews/userList", { users, header: "우리회사 식구들" });
 };
+
 export const getCreateUser = async (req, res) => {
-  res.render("./userViews/userCreate");
+  res.render("./userViews/userCreate", { header: "새 직원을 추가하세요" });
 };
 
 export const postCreateUser = async (req, res) => {
   let avatar;
   if (!req.file) {
-    avatar = "/static/statics/defaultProfile.jpeg";
+    avatar = null;
   } else {
     avatar = req.file.path;
   }
@@ -60,6 +65,12 @@ export const postCreateUser = async (req, res) => {
     });
     res.redirect("/users");
   } catch (error) {
+    if (error.code === 11000) {
+      return res.render("404", {
+        errorMessage: "사용자 사이의 중복된 정보가 있습니다",
+      });
+    }
+    console.log(error);
     res.render("404", { errorMessage: error });
   }
 };
@@ -74,18 +85,99 @@ export const postLogin = async (req, res) => {
   if (!user) {
     return res
       .render(400)
-      .render("login", { errorMessage: "사용자가 존재하지않음" });
+      .render("login", { errorMessage: "ID / PW 를 확인하세요" });
   }
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
-    return res.render(400).render("login", { errorMessage: "비밀번호 틀림" });
+    return res
+      .status(400)
+      .render("login", { errorMessage: "ID / PW 를 확인하세요" });
   }
   req.session.loggedIn = true;
   req.session.user = user;
   res.redirect("/");
 };
 
-export const logout = (req, res) => {
+export const getLogout = (req, res) => {
   req.session.destroy();
   return res.redirect("/login");
+};
+
+export const getUserEditInfo = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.render("userViews/userEditInfo", {
+    user,
+    header: `${user.name}님에 대한 수정`,
+  });
+};
+
+export const postUserEditInfo = async (req, res) => {
+  const { id } = req.params;
+  const {
+    name3,
+    grade,
+    department,
+    email,
+    mobile,
+    permission_plan,
+    permission_user,
+    birthDay,
+  } = req.body;
+  let search = {
+    name: name3,
+    grade: grade,
+    department: department,
+    mobile: mobile,
+    permission_plan: permission_plan,
+    permission_user: permission_user,
+
+    birthDay: birthDay,
+    email: email,
+  };
+  if (req.file) {
+    const avatar = req.file.path;
+    search.avatar = avatar;
+  }
+
+  try {
+    await User.findByIdAndUpdate(id, search);
+    await Event.create({
+      status: "wait",
+      type: "userInfo-modified",
+      byWhom: req.session.user._id,
+      toTarget: id,
+      createdAt: Date.now(),
+    });
+    res.redirect(`/users/${id}`);
+  } catch (error) {
+    res.render("404", { errorMessage: error });
+  }
+};
+
+export const getUserQuit = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  res.render("check", { header: `${user.name}님의 퇴사처리` });
+};
+
+export const postUserQuit = async (req, res) => {
+  const { id } = req.params;
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { check },
+  } = req;
+  const user = await User.findById(id);
+  const ok = await bcrypt.compare(check, password);
+  if (!ok) {
+    return res.status(400).render("check", {
+      errorMessage: "비밀번호를 확인하세요",
+      header: `${user.name}님의 퇴사처리`,
+    });
+  } else {
+    await User.findByIdAndRemove(id);
+    res.redirect("/users");
+  }
 };

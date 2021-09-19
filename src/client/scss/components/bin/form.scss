@@ -1,0 +1,33 @@
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+form > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: $element__gap__external;
+}
+
+form > * > * {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: $element__gap__internal 0;
+}
+
+form > * > *:first-child {
+  font-size: 18px;
+  font-weight: $font--bold;
+}
+
+.spanError {
+  color: red;
+  font-weight: 800;
+}
+.form-uppercase {
+  text-transform: uppercase;
+}

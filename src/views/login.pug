@@ -1,9 +1,25 @@
-block content 
-    h1 G&M TECH IMS
 
-    if(errorMessage)
-        small=errorMessage
-    form(method="POST")
-        input(type="text",placeholder="전화번호",required,name="mobile")
-        input(type="password",placeholder="비밀번호",required,name="password")
-        input(type="submit",value="로그인")
+doctype html
+html(lang="ko")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css")
+        //-link(rel="stylesheet" href="https://unpkg.com/mvp.css")
+        link(rel="stylesheet" href="/static/dynamics/css/styles.css")
+
+        title G&M OMS
+    body
+        div.login
+            img(src=`static/statics/gnmLogo.png`)
+            if(errorMessage)
+                div=errorMessage
+            form(method="POST")
+                div 
+                    label(for="id") ID
+                    input(id="id",type="text",placeholder="전화번호",required,name="mobile")
+                div 
+                    label(for="pw") PW 
+                    input(id="pw",type="password",placeholder="비밀번호",required,name="password")
+                input(type="submit",value="로그인")

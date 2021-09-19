@@ -1,11 +1,11 @@
 import Pump from "../models/Pump";
 
 export const getPumpRegister = (req, res) => {
-  res.render("pumpViews/pumpRegister");
+  res.render("pumpViews/pumpRegister", { header: "새로운 모델 등록하기" });
 };
 
 export const postPumpRegister = async (req, res) => {
-  const { free_flowRate, code, user, version, current, domestic, coating } =
+  const { free_flowRate, code, user, motor, coating, domestic, version } =
     req.body;
   try {
     await Pump.create({
@@ -13,10 +13,10 @@ export const postPumpRegister = async (req, res) => {
       code,
       name: free_flowRate + code,
       user,
-      version,
-      current,
-      domestic,
+      motor,
       coating,
+      domestic,
+      version,
       lastEdit: Date.now(),
     });
     return res.redirect("/manage");
@@ -29,13 +29,14 @@ export const postPumpRegister = async (req, res) => {
 };
 export const getPumpView = async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const pump = await Pump.findById(id);
   if (!pump) {
     return res.status(404).render("404");
   }
-
-  return res.render("pumpViews/pumpView", { pump });
+  return res.render("pumpViews/pumpView", {
+    pump,
+    header: `${pump.name} 의 상세정보`,
+  });
 };
 
 export const getPumpEdit = async (req, res) => {
@@ -44,12 +45,15 @@ export const getPumpEdit = async (req, res) => {
   if (!pump) {
     return res.status(404).render("404");
   }
-  res.render("pumpViews/pumpEdit", { pump });
+  res.render("pumpViews/pumpEdit", {
+    pump,
+    header: `${pump.name} 에 대한 수정`,
+  });
 };
 
 export const postPumpEdit = async (req, res) => {
   const { id } = req.params;
-  const { free_flowRate, code, user, version, current, domestic, coating } =
+  const { free_flowRate, code, user, motor, coating, domestic, version } =
     req.body;
   const pump = Pump.exists({ _id: id });
   if (!pump) {
@@ -61,10 +65,10 @@ export const postPumpEdit = async (req, res) => {
     free_flowRate,
     code,
     user,
-    version,
-    current,
-    domestic,
+    motor,
     coating,
+    domestic,
+    version,
     lastEdit: Date.now(),
   });
   return res.redirect(`/pumps/${id}`);

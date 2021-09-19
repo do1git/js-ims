@@ -1,0 +1,21 @@
+.container__multiSelection--reverse {
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
+  padding: 10px 0;
+  row-gap: 10px;
+  column-gap: 10px;
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  > * {
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
+
+.container--invisible {
+  //display: none;
+}

@@ -1,26 +1,30 @@
 extends ../base
-
-block content 
-    .pumpView__info 
-        .pumpView__info__name=pump.name 
-        .pumpView__info__user 
-            span for 
-            span #{pump.user} 
-        .pumpView__info__current=pump.current
-        .pumpView__info__coating 
-            span 코팅여부: 
-            span #{pump.coating}
-        if pump.domestic 
-            .pumpView__info__domestic 국내용
-        else 
-            .pumpView__info__domestic 해외용
-        .pumpView__info__version 개발단계: #{pump.version} 
-    hr
-    .pumpView__tools
-        a(href=`${pump.id}/edit`)
-            div 수정하기 &rarr;
-
-        a(href=`/plans/${pump.id}/register`)
-            div 출고계획 등록하기&rarr;
     
+block content 
+    ul.n1s2 
+        li
+            div 모델명
+            div=pump.name
+        li 
+            div 업체명
+            div=pump.user 
+        li 
+            div 모터
+            div=pump.motor 
+        li 
+            div 코팅
+            div=pump.coating 
+        li 
+            div 국내 / 해외
+            div=pump.domestic
+        li 
+            div 버전
+            div=pump.version 
+        
+    .button__home--horizontal
+        a(href=`${pump.id}/edit`).button--big.button--big--restricted 수정하기 &rarr;
+
+        a(href=`/plans/${pump.id}/register`).button--big.button--big--restricted 출고계획<br>등록하기&rarr;
+
     .pumpView__history 
+            

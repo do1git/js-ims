@@ -1,0 +1,45 @@
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: $island;
+  position: fixed;
+  top: 0px;
+  height: $header__height;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0 5px;
+}
+
+.header__logo {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+.header__logo img {
+  height: 28px;
+  width: auto;
+}
+
+.header__menu {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 17px;
+}
+
+.header__menu > * {
+  margin: 0 15px;
+}
+
+.header__user {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+.header__user img {
+  border-radius: 50%;
+  height: 25px;
+  width: auto;
+  border: 2px #dbdbdb solid;
+}

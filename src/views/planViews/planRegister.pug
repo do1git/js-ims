@@ -1,51 +1,47 @@
 extends ../base
 include ../mixins/pumpMixin
 
-block content 
-    div.planRegister    
-        div.planRegister__info 다음과 같은 모델로 출고계획 등록하기
-            +pump(pump)
+block content    
+    +pump(pump)
 
 
-        form(method="POST")
-            div
-                label(for="approved_id") 승인번호
-                input(required,id="approved_id",name="approved_id",type="text",placeholder="21001")
-            div
-                label(for="ordered_date") 최초 주문일
-                input(required,id="ordered_date",name="ordered_date",type="date")
-            div
-                label(for="planned_manufacturing_date") 생산 계획일
-                input(required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date",value=Date.now)
-            div
-                label(for="planned_outbound_date") 예상 출고일
-                input(required,id="planned_outbound_date",name="planned_outbound_date",type="date",value=Date.now)
-            div
-                label(for="manufacturing_department") 생산부서
-                input(required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
-            div
-                label(for="quantity") 수량
-                input(required,id="quantity",name="quantity",type="text",placeholder="수량을 입력해주세요")        
-            div
-                label(for="package") 포장방법
-                input(required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
-            div
-                label(for="memo") 특이 기록사항
-                input(id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
-
-            if errorMessage 
-                p=errorMessage
-
-            input(type="submit",value="등록하기")
-
-        datalist#departments
-            option(value="미니")
-            option(value="대형")
-            option(value="다이아프램")
-
-        datalist#packages
-            option(value="직납") 
-            option(value="택배") 
-            option(value="EMS") 
-            option(value="파레트") 
-            option(value="퀵") 
+    form.s1n2(method="POST")
+        div
+            label(for="approved_id") 승인번호
+            input(required,id="approved_id",name="approved_id",type="text",placeholder="21001")
+        div
+            label(for="ordered_date") 최초 주문일
+            input(required,id="ordered_date",name="ordered_date",type="date")
+        div
+            label(for="planned_manufacturing_date") 생산 계획일
+            input(required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date")
+        div
+            label(for="planned_outbound_date") 예상 출고일
+            input(required,id="planned_outbound_date",name="planned_outbound_date",type="date")
+        div
+            label(for="manufacturing_department") 생산부서
+            input(required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
+        div
+            label(for="quantity") 수량
+            input(required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
+        div
+            label(for="package") 포장방법
+            input(required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
+        div
+            label(for="memo") 특이 기록사항
+            input(id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
+        if errorMessage 
+            p=errorMessage
+        
+        input(type="submit",value="등록하기")
+    
+    datalist#departments
+        option(value="미니")
+        option(value="대형")
+        option(value="다이아프램")
+    datalist#packages
+        option(value="직납") 
+        option(value="택배") 
+        option(value="EMS") 
+        option(value="파레트") 
+        option(value="퀵") 

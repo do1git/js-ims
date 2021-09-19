@@ -2,23 +2,19 @@ extends base
 include mixins/pumpMixin
 
 block content 
-    form(method="GET")
-        .manage__searchBar 
-            input.manage__searchBar__box(type="text",name="keyword")
-            input.manage__searchBar__btn(type="submit",value="검색")
+    form.s1n2(method="GET")
+        div.manage__searchBar
+            input.uppercase(type="text",name="keyword",placeholder="펌프 모델명을 입력하세요")
+            input(type="submit",value="검색")
         hr
-        div.form--small
+        div
             label(for="user") 업체명
             input(name="user",type="text",id="user")
+        div
+            label(for="motor") 모터종류
+            input.uppercase(name="motor",type="text",id="motor")
+
         
-        div.form--small
-            span 모터 전류타입
-            input(name="current",value="ac",type="radio",id="current_ac")
-            label(for="current_ac") AC
-            input(name="current",value="bdc",type="radio",id="current_bdc")
-            label(for="current_bdc") BDC
-            input(name="current",value="bldc",type="radio",id="current_bldc")
-            label(for="current_bldc") BLDC
     hr
     hr
     div.manage__list

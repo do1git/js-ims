@@ -1,0 +1,54 @@
+.button--big {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: $border--black;
+  border-radius: $border__radius;
+  padding: 1rem;
+  text-align: center;
+}
+
+.button--small {
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: $border--black;
+  border-radius: 1rem;
+  padding: 0.5rem;
+}
+
+.button__home--horizontal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  > * {
+    margin: 5px 10px;
+  }
+}
+.button--big--restricted {
+  padding: 0 0;
+  height: 4rem;
+  width: 8rem;
+}
+.button--checked--reverse {
+  background-color: black;
+  color: white;
+  //background-color: #7ab1fd;
+}
+
+.blueBox--big--black {
+  width: 250px;
+  padding: 1rem;
+  border: $border--gray;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+.blueBox--big--blue {
+  border: 2px $blue__apple solid;
+}

@@ -7,10 +7,12 @@ const userSchema = new mongoose.Schema({
   grade: { type: String, required: true },
   department: { type: String, required: true },
   email: { type: String },
-  mobile: { type: String, required: true },
-  permission_plan: { type: Boolean, default: false },
-  permission_user: { type: Boolean, default: false },
+  mobile: { type: String, required: true, unique: true },
+
+  permission_plan: { type: Boolean },
+  permission_user: { type: Boolean },
   password: { type: String, required: true },
+
   birthDay: { type: String },
 });
 

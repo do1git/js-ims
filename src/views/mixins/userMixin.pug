@@ -1,0 +1,11 @@
+mixin user(info)
+    a(href=`/users/${info._id}`)
+        div.userList__user__profile
+            div.userList__user__profile__photo
+                if (info.avatar==null)
+                    img(src="/static/statics/defaultProfile.jpeg")
+                else
+                    img(src=`/${info.avatar}`)
+
+            div.userList__user__profile__info
+                div #{info.name} #{info.grade}님

@@ -1,12 +1,10 @@
 mixin pump(info)
-    a(href=`/pumps/${info.id}`)    
-
-        .pumpMixin__container 
+    a(href=`/pumps/${info.id}`).pumpMixin__container 
+        div.pumpMixin__container__user
+            span=info.user
+        div.pumpMixin__container__model
             span=info.name 
             span /
-            span=info.user 
+            span=info.coating 
             span /
-            span=info.current 
-            span /
-            span=info.coating
-    
+            span=info.motor 

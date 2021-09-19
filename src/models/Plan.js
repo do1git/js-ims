@@ -18,11 +18,14 @@ const PlanSchema = new mongoose.Schema({
   manufacturing_department: { type: String, required: true },
   memo: { type: String },
 
-  filePaths: [{ type: String }],
-  thumbnail: { type: String },
+  file_Paths: [{ type: String }],
+  file_thumbnail: { type: String },
 
   member: [{ type: String }],
   packaging: { type: String, required: true },
+
+  uploader_plan: [{ type: String }],
+  uploader_photo: [{ type: String }],
 });
 
 const Plan = mongoose.model("Plan", PlanSchema);

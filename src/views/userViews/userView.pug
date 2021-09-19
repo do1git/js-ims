@@ -1,7 +1,42 @@
 extends ../base
 
 block content
-    h1 유저개인창
-    img(src=user.avatar)
-    div=user.name 
-    div=user.department
+    div.userView__photo
+        if (user.avatar==null)
+            img(src="/static/statics/defaultProfile.jpeg")
+        else
+            img(src=`/${user.avatar}`)
+
+    ul.n1s2
+        li
+            div 이름
+            div=user.name 
+        li
+            div 직급
+            div=user.grade 
+        li 
+            div 부서
+            div=user.department 
+        if (user.email)
+            li 
+                div 이메일
+                div=user.email 
+        if (loggedInUser.permission_user==true)
+            li 
+                div 유저 정보 수정권한
+                div=user.permission_user
+            li 
+                div 생산 정보 수정권한
+                div=user.permission_plan
+    div.button__home--horizontal
+        if (loggedInUser.permission_user==true)
+            a(href=`${user._id}/infoEdit`).button--big.button--big--restricted 
+                span 정보<br>수정하기 
+            a(href=`${user._id}/quit`).button--big.button--big--restricted 
+                span 퇴사처리
+    div.button__home--horizontal
+        if (loggedInUser.mobile ==user.mobile )
+            a(href=`${user._id}/pwEdit`).button--big.button--big--restricted 
+                span 비밀번호<br>변경
+            a(href=`/users/logout`).button--big.button--big--restricted 
+                span 로그아웃

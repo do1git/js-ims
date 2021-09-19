@@ -1,13 +1,17 @@
 import express from "express";
 import session from "express-session";
+import flash from "express-flash";
 import MongoStore from "connect-mongo";
 import rootRouter from "./router/rootRouter";
 import pumpRouter from "./router/pumpRouter";
 import planRouter from "./router/planRouter";
 import userRouter from "./router/userRouter";
 import morgan from "morgan";
-import { localsMiddleware, publicOnlyMiddleware } from "./middlewares";
-import { ProvidePlugin } from "webpack";
+import {
+  eventChecker,
+  localsMiddleware,
+  publicOnlyMiddleware,
+} from "./middlewares";
 
 const app = express();
 const logger = morgan("dev");
@@ -25,6 +29,7 @@ app.use(
   })
 );
 
+app.use(flash());
 app.use(localsMiddleware);
 app.use("/uploads", express.static("uploads"));
 app.use("/static", express.static("assets"));

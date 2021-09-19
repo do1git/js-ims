@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs-extra";
+import Event from "./models/Event";
 
 export const uploadFiles = multer({
   storage: multer.diskStorage({
@@ -34,8 +35,14 @@ export const localsMiddleware = (req, res, next) => {
   next();
 };
 
-export const protectorMiddleware = (req, res, next) => {
+export const protectorMiddleware = async (req, res, next) => {
   if (req.session.loggedIn) {
+    console.log("🧑‍🚒protector runs");
+    if (await eventChecker(req)) {
+      //   res.redirect("/");
+    }
+    // if (eventChecker(req, res)) {
+    // }
     next();
   } else {
     return res.redirect("/login");
@@ -44,15 +51,41 @@ export const protectorMiddleware = (req, res, next) => {
 
 export const publicOnlyMiddleware = (req, res, next) => {
   if (!req.session.loggedIn) {
+    console.log("🌊Go to public");
     next();
   } else {
     return res.redirect("/");
   }
 };
+
+const eventChecker = async (req) => {
+  const userId = req.session.user._id;
+  let checker = false;
+  const events = await Event.find({
+    status: "wait",
+    toTarget: userId,
+    type: "userInfo-modified",
+  });
+
+  events.forEach(async (e) => {
+    req.session.loggedIn = false;
+    e.status = "done";
+    checker = true;
+    await e.save();
+  });
+
+  if (checker) {
+    return true;
+  } else {
+    return false;
+  }
+};
+
 export const jsDateToKdate = (d) => {
   const year = d.getFullYear();
-  const month = d.getMonth() + 1;
-  const date = d.getDate();
+  const month =
+    d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  const date = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
   const day = d.getDay();
   let kday;
   switch (day) {
@@ -71,5 +104,37 @@ export const jsDateToKdate = (d) => {
     case 6:
       kday = "일";
   }
-  return `${year}-${month}-${date}-${kday}`;
+  return `${year}.${month}.${date}.${kday}`;
+};
+
+export const jsDayToKday = (d) => {
+  const day = d.getDay();
+  let kday;
+  switch (day) {
+    case 0:
+      kday = "월";
+    case 1:
+      kday = "화";
+    case 2:
+      kday = "수";
+    case 3:
+      kday = "목";
+    case 4:
+      kday = "금";
+    case 5:
+      kday = "토";
+    case 6:
+      kday = "일";
+  }
+  return kday;
+};
+
+export const jsYYYYMMDD = (d) => {
+  if (d === null) {
+    return null;
+  }
+  const yyyy = d.getFullYear();
+  const mm = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
+  const dd = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
+  return `${yyyy}-${mm}-${dd}`;
 };

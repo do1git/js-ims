@@ -1,0 +1,16 @@
+extends ./base
+
+block content 
+    form(method="post")
+        div 
+            div 진행하시겠습니까?
+            div 되돌리지 못합니다
+        div 
+            label(for="check") 비밀번호를 입력하세요
+            input(name="check", id="check", required, type="password")
+        if (errorMessage)
+            div 
+                .spanError 비밀번호를 확인하세요
+
+
+        input(type="submit",value="실행하기")

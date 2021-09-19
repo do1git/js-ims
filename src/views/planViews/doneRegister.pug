@@ -1,14 +1,23 @@
 extends ../base
+include ../mixins/pumpMixin
+
 
 block content 
-    h2 제품명   
-        div
-        h2 #{plan.model.name}
-        span 출고일 #{plan.planned_outbound_date}
-    hr
+    +pump(plan.model)
 
-    h3 위 모델에 대한 사진등록
-    form(method="POST",enctype="multipart/form-data")
-        label(for="done_photo")
-        input(id="done_photo",name="photos",type="file",accept="image/*",multiple="multiple") 
-        input(type="submit",value="사진 등록하기")
+    form.s1n2(method="post",enctype="multipart/form-data")
+        div
+            label(for="done_photo")
+            input(required,id="done_photo",name="photos",type="file",accept="image/*",multiple="multiple") 
+        
+
+        div
+            span 작업에 참여한 멤버를 선택하세요
+            div.container__multiSelection--reverse
+                each worker in workers 
+                    div
+                        input.container--invisible(id=`${worker.name}`,name="member",type="checkbox",value=worker.name,checked="false")
+                        label.button--small(for=`${worker.name}`) #{worker.name}
+            //- ㅁㅔㅁ바 만들고 오기
+        input(type="submit",value="사진&멤버 등록하기")
+    script(src="/static/dynamics/js/container__multiSelection__reverse.js") 

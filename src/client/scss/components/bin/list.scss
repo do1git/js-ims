@@ -1,0 +1,27 @@
+ul {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 2px 0px;
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: $element__gap__external;
+}
+
+li > * {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: $element__gap__internal 0;
+}
+
+li > *:nth-child(2) {
+  font-size: $font--big;
+  font-weight: $font--bold;
+}

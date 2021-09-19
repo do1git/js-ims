@@ -3,8 +3,6 @@ include mixins/planMixin
 
 block content 
     .home 
-        .home__main.banner &rarr; 생산예정 모델 (출고 불가능)
-    
         .home__list
             each plan in plans_k
                 +plan(plan)

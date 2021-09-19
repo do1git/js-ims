@@ -1,6 +1,8 @@
 .manage__list {
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
+}
+.manage__searchBar input[name="keyword"]::placeholder {
+  text-align: center;
 }
