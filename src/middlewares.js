@@ -45,6 +45,7 @@ export const protectorMiddleware = async (req, res, next) => {
     // }
     next();
   } else {
+    req.flash("error", "로그인을 해주세요");
     return res.redirect("/login");
   }
 };
@@ -54,6 +55,7 @@ export const publicOnlyMiddleware = (req, res, next) => {
     console.log("🌊Go to public");
     next();
   } else {
+    req.flash("error", "로그인이 되어있습니다");
     return res.redirect("/");
   }
 };

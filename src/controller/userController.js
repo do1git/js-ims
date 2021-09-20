@@ -63,6 +63,7 @@ export const postCreateUser = async (req, res) => {
       password,
       birthDay,
     });
+    req.flash("success", `${name3}님의 계정이 생성되었습니다`);
     res.redirect("/users");
   } catch (error) {
     if (error.code === 11000) {
@@ -95,11 +96,14 @@ export const postLogin = async (req, res) => {
   }
   req.session.loggedIn = true;
   req.session.user = user;
+  req.flash("success", `${user.name}님의 안녕하세요`);
   res.redirect("/");
 };
 
 export const getLogout = (req, res) => {
+  const logoutUser = req.session.user.name;
   req.session.destroy();
+  req.flash("success", `${logoutUser}님의 로그아웃이 완료되었습니다`);
   return res.redirect("/login");
 };
 
@@ -149,6 +153,7 @@ export const postUserEditInfo = async (req, res) => {
       toTarget: id,
       createdAt: Date.now(),
     });
+    req.flash("success", `${name3}님의 정보수정이 완료되었습니다`);
     res.redirect(`/users/${id}`);
   } catch (error) {
     res.render("404", { errorMessage: error });
@@ -170,6 +175,7 @@ export const postUserQuit = async (req, res) => {
     body: { check },
   } = req;
   const user = await User.findById(id);
+  const userName = user.name;
   const ok = await bcrypt.compare(check, password);
   if (!ok) {
     return res.status(400).render("check", {
@@ -178,6 +184,7 @@ export const postUserQuit = async (req, res) => {
     });
   } else {
     await User.findByIdAndRemove(id);
+    req.flash("success", `${userName}님의 퇴사처리가 완료되었습니다`);
     res.redirect("/users");
   }
 };

@@ -1,0 +1,31 @@
+.flash {
+  font-size: 1.5rem;
+  font-weight: 700;
+  width: 100vw;
+  height: 3.5rem;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  span:nth-child(1) {
+    width: 3.5rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  span:nth-child(2) {
+    margin-left: 1rem;
+  }
+}
+.flash__success {
+  background-color: $green;
+  span:nth-child(1) {
+    background-color: $green__icon;
+  }
+}
+.flash__error {
+  background-color: $red;
+  span:nth-child(1) {
+    background-color: $red__icon;
+  }
+}

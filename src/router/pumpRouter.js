@@ -7,7 +7,6 @@ import {
   postPumpDelete,
   postPumpEdit,
   postPumpRegister,
-  pumpList,
 } from "../controller/pumpController";
 import { protectorMiddleware } from "../middlewares";
 const pumpRouter = express.Router();
@@ -21,10 +20,11 @@ pumpRouter
   .all(protectorMiddleware)
   .get(getPumpEdit)
   .post(postPumpEdit);
-pumpRouter
-  .route("/:id([0-9a-f]{24})/delete")
-  .all(protectorMiddleware)
-  .get(getPumpDelete);
+// pumpRouter if you needed, you can activate
+//   .route("/:id([0-9a-f]{24})/delete")
+//   .all(protectorMiddleware)
+//   .get(getPumpDelete)
+//   .post(postPumpDelete);
 pumpRouter
   .route("/register")
   .all(protectorMiddleware)

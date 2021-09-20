@@ -19,6 +19,7 @@ export const postPumpRegister = async (req, res) => {
       version,
       lastEdit: Date.now(),
     });
+    req.flash("success", `${free_flowRate + code}모델이 등록되었습니다`);
     return res.redirect("/manage");
   } catch (error) {
     console.log(error);
@@ -64,6 +65,7 @@ export const postPumpEdit = async (req, res) => {
   await Pump.findByIdAndUpdate(id, {
     free_flowRate,
     code,
+    name: free_flowRate + code,
     user,
     motor,
     coating,
@@ -71,21 +73,34 @@ export const postPumpEdit = async (req, res) => {
     version,
     lastEdit: Date.now(),
   });
+  req.flash("success", `${free_flowRate + code}모델이 등록되었습니다`);
   return res.redirect(`/pumps/${id}`);
 };
 
 export const getPumpDelete = async (req, res) => {
   const { id } = req.params;
   const pump = await Pump.findById(id);
+  res.render("check", { header: `${pump.name}모델 삭제처리` });
+};
+
+export const postPumpDelete = async (req, res) => {
+  const { id } = req.params;
+  const {
+    session: {
+      user: { _id, password },
+    },
+    body: { check },
+  } = req;
+  const pump = await Pump.findById(id);
   if (!pump) {
-    return res.status(404).render("404");
+    return res.status(404).render("404", {
+      errorMessage: "해당 펌프가 이미 삭제되었거나 존재하지 않습니다",
+    });
   }
-  /*if (String(video.owner) !== String(req.session.user._id)) {
-    return res.status(403).redirect("/");
-  }
-  const user = await User.findById(req.session.user._id);*/
+  const pumpName = pump.name;
+  const ok = await bcrypt.compare(check, password);
   await Pump.findByIdAndDelete(id);
-  /*user.videos.pull(video.id);
-  user.save();*/
+
+  req.flash("success", `${pumpName}모델이 삭제되었습니다`);
   return res.redirect("/");
 };

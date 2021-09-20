@@ -17,6 +17,14 @@ html(lang="ko")
         include partials/nav
 
         main 
+            if messages.success
+                div.flash.flash__success
+                    span <i class="fas fa-check-square"></i>
+                    span=messages.success
+            if messages.error
+                div.flash.flash__error
+                    span <i class="fas fa-exclamation-triangle"></i>
+                    span=messages.error
             include partials/header
             block content
         

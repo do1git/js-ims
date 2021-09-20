@@ -2,6 +2,7 @@
 @import "./config/reset";
 
 //components
+@import "./components/flash.scss";
 @import "./components/nav.scss";
 //@import "./components/form.scss";
 @import "./components/header.scss";
@@ -36,6 +37,8 @@ html {
   justify-content: center;
   background-color: $bg;
   font-size: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
 }
 
 body {
@@ -43,7 +46,7 @@ body {
   max-width: 600px;
   width: 100vw;
 
-  margin-top: $start__height;
+  margin-top: $header__height;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
@@ -52,9 +55,6 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  overflow-x: hidden;
-  overflow-y: auto;
 }
 
 hr {
@@ -70,12 +70,12 @@ body > * {
   width: 100%;
 }
 
-nav {
-  border: 4px rgb(253, 132, 150) solid;
-}
-body {
-  border: 5px solid black;
-}
-.userList__user__profile__photo {
-  border: 2px solid blueviolet;
-}
+// nav {
+//   border: 4px rgb(253, 132, 150) solid;
+// }
+// body {
+//   border: 5px solid black;
+// }
+// .userList__user__profile__photo {
+//   border: 2px solid blueviolet;
+// }

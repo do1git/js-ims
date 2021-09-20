@@ -1,4 +1,3 @@
-
 doctype html
 html(lang="ko")
     head
@@ -11,11 +10,19 @@ html(lang="ko")
 
         title G&M OMS
     body
+        if messages.success
+            div.flash.flash__success
+                span <i class="fas fa-check-square"></i>
+                span=messages.success
+        if messages.error
+            div.flash.flash__error
+                span <i class="fas fa-exclamation-triangle"></i>
+                span=messages.error
         div.login
             img(src=`static/statics/gnmLogo.png`)
             if(errorMessage)
                 div=errorMessage
-            form(method="POST")
+            form.s1n2(method="POST")
                 div 
                     label(for="id") ID
                     input(id="id",type="text",placeholder="전화번호",required,name="mobile")

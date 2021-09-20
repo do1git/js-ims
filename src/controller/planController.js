@@ -107,6 +107,10 @@ export const postPlanRegister = async (req, res) => {
       errorMessage: "계획을 수립할 수 없습니다 (빠진 기록사항을 확인하세요)",
     });
   }
+  req.flash(
+    "success",
+    `승인번호 '${approved_id}'의 생산/출고계획이 등록되었습니다`
+  );
   return res.redirect("/");
 };
 
@@ -170,7 +174,7 @@ export const postDoneRegister2 = async (req, res) => {
     file_thumbnail: mainPic,
     manufacturing_date: Date.now(),
   });
-
+  req.flash("success", `출고용 사진등록이 완료되었습니다`);
   res.redirect("/done");
 };
 
@@ -255,11 +259,9 @@ export const postPlanEdit = async (req, res) => {
       .status(404)
       .render("404", { errorMessage: "수정할 펌프가 없습니다" });
   }
+  req.flash(
+    "success",
+    `승인번호 '${approved_id}'의 생산/출고 계획이 수정되었습니다`
+  );
   return res.redirect(`/plans/${id}`);
 };
-
-// export const getPlanDone = (req, res) => {};
-// export const getManage = (req, res) => {};
-// export const getPlanRegister = (req, res) => {};
-// export const getPlanEdit = (req, res) => {};
-// export const getPlanDelete = (req, res) => {};
