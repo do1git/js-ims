@@ -4,6 +4,7 @@ import bcrypt from "bcrypt";
 import session from "express-session";
 
 export const getEtc = async (req, res) => {
+  console.log(req.session.user);
   res.render("etc", { header: "목록" });
 };
 export const getUserView = async (req, res) => {
@@ -96,13 +97,13 @@ export const postLogin = async (req, res) => {
   }
   req.session.loggedIn = true;
   req.session.user = user;
-  req.flash("success", `${user.name}님의 안녕하세요`);
+  req.flash("success", `${user.name}님 안녕하세요`);
   res.redirect("/");
 };
 
 export const getLogout = (req, res) => {
   const logoutUser = req.session.user.name;
-  req.session.destroy();
+  req.session.loggedIn = false;
   req.flash("success", `${logoutUser}님의 로그아웃이 완료되었습니다`);
   return res.redirect("/login");
 };

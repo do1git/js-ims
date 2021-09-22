@@ -38,18 +38,55 @@ export const localsMiddleware = (req, res, next) => {
 export const protectorMiddleware = async (req, res, next) => {
   if (req.session.loggedIn) {
     console.log("🧑‍🚒protector runs");
-    if (await eventChecker(req)) {
-      //   res.redirect("/");
+
+    const userId = req.session.user._id;
+    const events = await Event.find({
+      status: "wait",
+      toTarget: userId,
+      type: "userInfo-modified",
+    });
+
+    if (events.length > 0) {
+      req.session.loggedIn = false;
+      events.forEach(async (e) => {
+        console.log("MAKE LOGGED OUT A USER", req.session.loggedIn);
+        e.status = "done";
+        await e.save();
+      });
+      req.flash("error", "정보수정으로 인해 다시 로그인 해주세요");
+      return res.redirect("/login");
+    } else {
+      console.log("not working");
+      return next();
     }
-    // if (eventChecker(req, res)) {
-    // }
-    next();
   } else {
     req.flash("error", "로그인을 해주세요");
     return res.redirect("/login");
   }
 };
+// const eventChecker = async (req) => {
+//   const userId = req.session.user._id;
+//   let checker = false;
+//   const events = await Event.find({
+//     status: "wait",
+//     toTarget: userId,
+//     type: "userInfo-modified",
+//   });
 
+//   events.forEach(async (e) => {
+//     req.session.loggedIn = false;
+//     console.log("MAKE LOGGED OUT A USER", req.session.loggedIn);
+//     e.status = "done";
+//     checker = true;
+//     await e.save();
+//   });
+
+//   if (checker) {
+//     return true;
+//   } else {
+//     return false;
+//   }
+// };
 export const publicOnlyMiddleware = (req, res, next) => {
   if (!req.session.loggedIn) {
     console.log("🌊Go to public");
@@ -60,26 +97,13 @@ export const publicOnlyMiddleware = (req, res, next) => {
   }
 };
 
-const eventChecker = async (req) => {
-  const userId = req.session.user._id;
-  let checker = false;
-  const events = await Event.find({
-    status: "wait",
-    toTarget: userId,
-    type: "userInfo-modified",
-  });
-
-  events.forEach(async (e) => {
-    req.session.loggedIn = false;
-    e.status = "done";
-    checker = true;
-    await e.save();
-  });
-
-  if (checker) {
-    return true;
+export const protectorMiddleware_plan = async (req, res, next) => {
+  if (req.session.user.permission_plan) {
+    console.log("🧑‍🚒protector PLAN runs");
+    next();
   } else {
-    return false;
+    req.flash("error", "생산/출고계획 접근권한을 확인하세요");
+    return res.redirect("/");
   }
 };
 

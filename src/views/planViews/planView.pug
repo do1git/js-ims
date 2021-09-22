@@ -58,10 +58,13 @@ block content
                 div 기록사항 없음
 
     div.button__home--horizontal
-        a(href=`/plans/${plan._id}/edit`).button--big.button--big--restricted 수정하기 &rarr; 
+        if (loggedInUser.permission_plan)
+            a(href=`/plans/${plan._id}/edit`).button--big.button--big--restricted 수정하기 &rarr; 
 
-        a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 제작완료<br>하기 &rarr; 
-        if (loggedInUser.permission_user&&plan.status=="done")
+        if (plan.status=="wait")
+            a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 제작완료<br>하기 &rarr; 
+        
+        if (loggedInUser.permission_plan&&plan.status=="done")
             a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 고객사로<br>출고하기 &rarr; 
     
     if plan.file_thumbnail

@@ -5,3 +5,28 @@
 .uppercase {
   text-transform: uppercase;
 }
+.no_click,
+.no__click {
+  pointer-events: none;
+  opacity: 0.5;
+}
+.invisible {
+  display: none;
+}
+.no__info {
+  font-size: 2.3rem;
+  font-weight: 700;
+}
+.caution {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  color: $gray;
+  font-size: 1.3rem;
+  span:nth-child(1) {
+    font-size: 1.5rem;
+  }
+  > * {
+    margin-bottom: 0.2rem;
+  }
+}

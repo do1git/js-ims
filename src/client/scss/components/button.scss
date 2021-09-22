@@ -9,6 +9,12 @@
   text-align: center;
 }
 
+.button--red {
+  border-color: $red__icon;
+  background-color: $red;
+  font-weight: 700;
+}
+
 .button--small {
   font-size: 1.5rem;
   display: flex;
@@ -17,6 +23,7 @@
   border: $border--black;
   border-radius: 1rem;
   padding: 0.5rem;
+  text-align: center;
 }
 
 .button__home--horizontal {

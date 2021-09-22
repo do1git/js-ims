@@ -2,11 +2,12 @@ extends ../base
 
 block content 
     form.s1n2(method="POST",enctype="multipart/form-data")
-        div 
+        div(data-avatar=user.avatar).avatar
             label(for="avatar") 사진
-            input(value=user.avatar,id="avatar",name="avatar",type="file",accept="image/*")
-            if (user.avatar!=null)
-                input(value="기본사진",name="avatar",type="button")
+            if (user.avatar) 
+                img(src=`/${user.avatar}`,height="150px")
+                input(value="사진 없애기",name="avatar",type="button")
+            input(id="avatar",name="avatar",type="file",accept="image/*")
         div 
             label(for="name3") 이름 (필수)
             input(value=user.name,required,id="name3",name="name3",type="text")
@@ -26,7 +27,7 @@ block content
             label(for="birthDay") 생일 (4자리 입력)
             input(value=user.birthDay,id="birthDay",minlength="4",maxlength="4",name="birthDay",type="text")
         div
-            div 일정 수립권한 (일정 등록/편집) (필수)
+            div 생산/출고 계획 수립권한 (계획 등록/편집) (필수)
             div 
                 input(id="permission_plan_true",name="permission_plan",type="radio",value="true")       
                 label(for="permission_plan_true") 허용
@@ -64,5 +65,6 @@ block content
             option(value="사원")
             option(value="아르바이트")
 
+    script(src="/static/dynamics/js/userEdit.js") 
 
 

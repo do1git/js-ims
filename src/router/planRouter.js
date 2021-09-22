@@ -1,15 +1,21 @@
 import express from "express";
 import {
   getDoneRegister,
+  getPlanDelete,
   getPlanEdit,
   getPlanRegister,
   getPlanView,
   postDoneRegister,
   postDoneRegister2,
+  postPlanDelete,
   postPlanEdit,
   postPlanRegister,
 } from "../controller/planController";
-import { protectorMiddleware, uploadFiles } from "../middlewares";
+import {
+  protectorMiddleware,
+  protectorMiddleware_plan,
+  uploadFiles,
+} from "../middlewares";
 
 const planRouter = express.Router();
 
@@ -24,7 +30,7 @@ planRouter
   .get(getPlanView);
 planRouter
   .route("/:id([0-9a-f]{24})/done")
-  .all(protectorMiddleware)
+  .all(protectorMiddleware, protectorMiddleware_plan)
   .get(getDoneRegister)
   .post(uploadFiles.array("photos", 10), postDoneRegister);
 planRouter
@@ -36,4 +42,9 @@ planRouter
   .all(protectorMiddleware)
   .get(getPlanEdit)
   .post(postPlanEdit);
+planRouter
+  .route("/:id([0-9a-f]{24})/delete")
+  .all(protectorMiddleware)
+  .get(getPlanDelete)
+  .post(postPlanDelete);
 export default planRouter;

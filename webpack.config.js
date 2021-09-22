@@ -9,6 +9,8 @@ module.exports = {
     button__blueBox: "./src/client/js/button__blueBox.js",
     container__multiSelection__reverse:
       "./src/client/js/container__multiSelection__reverse.js",
+    planEdit: "./src/client/js/planEdit.js",
+    userEdit: "./src/client/js/userEdit.js",
   },
   watch: true,
   plugins: [

@@ -2,6 +2,7 @@ import { jsDateToKdate, jsYYYYMMDD } from "../middlewares";
 import Plan from "../models/Plan";
 import Pump from "../models/Pump";
 import User from "../models/User";
+import bcrypt from "bcrypt";
 
 export const home = async (req, res) => {
   let plans = await Plan.find({ status: "wait" }).populate("model");
@@ -67,7 +68,7 @@ export const getPlanRegister = async (req, res) => {
     return res.render("404", { errorMessage: "해당 모델이 존재하지 않습니다" });
   res.render("planViews/planRegister", {
     pump,
-    header: `${pump.name} 으로 출고계획 등록`,
+    header: `${pump.name}의 생산/출고계획 등록`,
   });
 };
 
@@ -119,7 +120,7 @@ export const getPlanView = async (req, res) => {
   const plan = await Plan.findById(id).populate("model");
   res.render("planViews/planView", {
     plan,
-    header: `${plan.model.name} 에 대한 출고계획`,
+    header: `${plan.model.name} 에 대한 생산/출고계획`,
   });
 };
 
@@ -196,31 +197,15 @@ export const getDoneList = async (req, res) => {
     plans_k.push(obj);
   }
 
-  return res.render("home", { plans_k, header: "생산 완료 모델" });
+  return res.render("home", { plans_k, header: "생산완료 / 출고대기 모델" });
 };
 
 export const getPlanEdit = async (req, res) => {
   const { id } = req.params;
   const plan = await Plan.findById(id).populate("model");
-  const planK = {
-    status: plan.status,
-    approved_id: plan.approved_id,
-    quantity: plan.quantity,
-
-    ordered_date: jsYYYYMMDD(plan.ordered_date),
-    planned_manufacturing_date: jsYYYYMMDD(plan.planned_manufacturing_date),
-    manufacturing_date: jsYYYYMMDD(plan.manufacturing_date),
-    planned_outbound_date: jsYYYYMMDD(plan.planned_outbound_date),
-    outbound_date: jsYYYYMMDD(plan.outbound_date),
-
-    manufacturing_department: plan.manufacturing_department,
-    memo: plan.memo,
-    member: plan.member,
-    packaging: plan.packaging,
-  };
   res.render("planViews/planEdit", {
-    planK,
-    header: `${plan.model.name}에 대한 출고계획수정`,
+    plan,
+    header: `${plan.model.name}에 대한 계획수정`,
   });
 };
 export const postPlanEdit = async (req, res) => {
@@ -239,6 +224,13 @@ export const postPlanEdit = async (req, res) => {
     member,
     packaging,
   } = req.body;
+  if (status === "wait") {
+    manufacturing_date = null;
+    outbound_date = null;
+  } else if (status === "done") {
+    outbound_date = null;
+  }
+
   try {
     await Plan.findByIdAndUpdate(id, {
       status,
@@ -264,4 +256,38 @@ export const postPlanEdit = async (req, res) => {
     `승인번호 '${approved_id}'의 생산/출고 계획이 수정되었습니다`
   );
   return res.redirect(`/plans/${id}`);
+};
+
+export const getPlanDelete = async (req, res) => {
+  const { id } = req.params;
+  const plan = await Plan.findById(id);
+  res.render("check", {
+    header: `입고/출고계획 '${plan.approved_id}' 삭제처리`,
+  });
+};
+
+export const postPlanDelete = async (req, res) => {
+  const { id } = req.params;
+  const {
+    session: {
+      user: { password },
+    },
+    body: { check },
+  } = req;
+  const plan = await Plan.findById(id);
+  const planApproved_id = plan.approved_id;
+  const ok = await bcrypt.compare(check, password);
+  if (!ok) {
+    return res.status(400).render("check", {
+      errorMessage: "비밀번호를 확인하세요",
+      header: `입고/출고계획 '${plan.approved_id}' 삭제처리`,
+    });
+  } else {
+    await Plan.findByIdAndRemove(id);
+    req.flash(
+      "success",
+      `입고/출고계획 '${plan.approved_id}' 삭제처리가 완료되었습니다`
+    );
+    res.redirect("/");
+  }
 };

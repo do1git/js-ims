@@ -7,31 +7,32 @@ block content
 
     form.s1n2(method="POST")
         div
-            label(for="approved_id") 승인번호
+            label(for="approved_id") 승인번호 (필수)
             input(required,id="approved_id",name="approved_id",type="text",placeholder="21001")
         div
-            label(for="ordered_date") 최초 주문일
+            label(for="ordered_date") 최초 주문일 (필수)
             input(required,id="ordered_date",name="ordered_date",type="date")
         div
-            label(for="planned_manufacturing_date") 생산 계획일
+            label(for="planned_manufacturing_date") 생산 계획일 (필수)
             input(required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date")
         div
-            label(for="planned_outbound_date") 예상 출고일
+            label(for="planned_outbound_date") 예상 출고일 (필수)
             input(required,id="planned_outbound_date",name="planned_outbound_date",type="date")
+        span.spanError.jsError.invisible 주문일≤생산일≤출고일 순서를 확인해주세요
         div
-            label(for="manufacturing_department") 생산부서
+            label(for="manufacturing_department") 생산부서 (필수)
             input(required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
         div
-            label(for="quantity") 수량
+            label(for="quantity") 수량 (필수)
             input(required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
         div
-            label(for="package") 포장방법
+            label(for="package") 포장방법 (필수)
             input(required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
         div
             label(for="memo") 특이 기록사항
             input(id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
         if errorMessage 
-            p=errorMessage
+            span.spanError=errorMessage
         
         input(type="submit",value="등록하기")
     
@@ -45,3 +46,5 @@ block content
         option(value="EMS") 
         option(value="파레트") 
         option(value="퀵") 
+        
+    script(src="/static/dynamics/js/planRegister.js")

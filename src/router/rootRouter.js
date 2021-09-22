@@ -22,8 +22,8 @@ rootRouter
   .get(getLogin)
   .post(postLogin);
 rootRouter.route("/done").all(protectorMiddleware).get(getDoneList);
-rootRouter.route("/manage").get(getManage);
-rootRouter.all(protectorMiddleware).get("/etc", getEtc);
+rootRouter.route("/manage").all(protectorMiddleware).get(getManage);
+rootRouter.route("/etc").all(protectorMiddleware).get(getEtc);
 // rootRouter.get("/logout", logout);
 
 export default rootRouter;

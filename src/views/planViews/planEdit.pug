@@ -2,11 +2,11 @@ extends ../base
 include ../mixins/pumpMixin
 
 block content    
-    form(method="POST")
+    form.s1n2(method="POST")
     
         div
             span 상태
-            div
+            div(data-status=plan.status).status
                 input(value="wait", required,id="wait",name="status",type="radio")
                 label(for="wait") wait(대기)
                 input(value="done", required,id="done",name="status",type="radio")
@@ -16,38 +16,55 @@ block content
                 
         div
             label(for="approved_id") 승인번호
-            input(value=planK.approved_id, required,id="approved_id",name="approved_id",type="text",placeholder="21001")
-        div
+            input(value=plan.approved_id, required,id="approved_id",name="approved_id",type="text",placeholder="21001")
+        
+        div(data-ordered_date=plan.ordered_date).ordered_date
             label(for="ordered_date") 주문일
-            input(value=planK.ordered_date,required,id="ordered_date",name="ordered_date",type="date")
-        div
-            label(for="planned_manufacturing_date") 계획 생신일
-            input(value=planK.planned_manufacturing_date,required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date")
-        div
-            label(for="planned_manufacturing_date") 실제 생신일
-            input(value=planK.manufacturing_date,id="manufacturing_date",name="manufacturing_date",type="date")
-        div
+            input(required,id="ordered_date",name="ordered_date",type="date")
+
+        div(data-planned_manufacturing_date=plan.planned_manufacturing_date).planned_manufacturing_date
+            label(for="planned_manufacturing_date") 계획 생산일
+            input(required,id="planned_manufacturing_date",name="planned_manufacturing_date",type="date")
+        
+        div(data-manufacturing_date=plan.manufacturing_date).manufacturing_date
+            label(for="manufacturing_date") 실제 생산일
+            input(id="manufacturing_date",name="manufacturing_date",type="date")
+            button(type="button") 계획과 같음
+
+        div(data-planned_outbound_date=plan.planned_outbound_date).planned_outbound_date
             label(for="planned_outbound_date") 계획 출고일
-            input(value=planK.planned_outbound_date,required,id="planned_outbound_date",name="planned_outbound_date",type="date")
-        div
-            label(for="planned_outbound_date") 실제 출고일
-            input(value=planK.outbound_date,id="outbound_date",name="outbound_date",type="date")
+            input(required,id="planned_outbound_date",name="planned_outbound_date",type="date")
+
+        div(data-outbound_date=plan.outbound_date).outbound_date
+            label(for="outbound_date") 실제 출고일
+            input(id="outbound_date",name="outbound_date",type="date")
+            button(type="button") 계획과 같음
+        span.spanError.jsError.invisible 주문일≤생산일≤출고일 순서를 확인해주세요<br>(주문일≤생산예정일≤출고예정일)
+
         div
             label(for="manufacturing_department") 생산부서
-            input(value=planK.manufacturing_department,required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
+            input(value=plan.manufacturing_department,required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
         div
             label(for="quantity") 수량
-            input(value=planK.quantity,required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
+            input(value=plan.quantity,required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
         div
             label(for="package") 포장방법
-            input(value=planK.packaging,required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
+            input(value=plan.packaging,required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
         div
             label(for="memo") 특이 기록사항
-            input(value=planK.memo,id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
+            input(value=plan.memo,id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
         if errorMessage 
             p=errorMessage
         
         input(type="submit",value="등록하기")
+
+        a(href=`/plans/${plan._id}/delete`).button--small.button--red 계획<br>삭제하기 &rarr; 
+
+    div.caution 
+        span 주의사항
+        span 1. 되돌릴 수 없습니다. 신중하십시오.
+        span 2. 주문일≤생산일≤출고일 순서를 확인하세요.
+
     
     datalist#departments
         option(value="미니")
@@ -59,3 +76,5 @@ block content
         option(value="EMS") 
         option(value="파레트") 
         option(value="퀵") 
+
+    script(src="/static/dynamics/js/planEdit.js") 

@@ -23,20 +23,21 @@ block content
                 div=user.email 
         if (loggedInUser.permission_user==true)
             li 
-                div 유저 정보 수정권한
-                div=user.permission_user
-            li 
-                div 생산 정보 수정권한
+                div 생산/출고 계획 수정권한
                 div=user.permission_plan
+            li 
+                div 직원 관리권한
+                div=user.permission_user
     div.button__home--horizontal
         if (loggedInUser.permission_user==true)
             a(href=`${user._id}/infoEdit`).button--big.button--big--restricted 
-                span 정보<br>수정하기 
+                span 정보<br>수정하기 &rarr;
             a(href=`${user._id}/quit`).button--big.button--big--restricted 
-                span 퇴사처리
+                span 퇴사처리 &rarr;
     div.button__home--horizontal
         if (loggedInUser.mobile ==user.mobile )
             a(href=`${user._id}/pwEdit`).button--big.button--big--restricted 
-                span 비밀번호<br>변경
+                span 비밀번호<br>변경 &rarr;
             a(href=`/users/logout`).button--big.button--big--restricted 
-                span 로그아웃
+                span 로그아웃 &rarr;
+

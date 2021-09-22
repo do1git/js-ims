@@ -7,11 +7,7 @@ import pumpRouter from "./router/pumpRouter";
 import planRouter from "./router/planRouter";
 import userRouter from "./router/userRouter";
 import morgan from "morgan";
-import {
-  eventChecker,
-  localsMiddleware,
-  publicOnlyMiddleware,
-} from "./middlewares";
+import { localsMiddleware, publicOnlyMiddleware } from "./middlewares";
 
 const app = express();
 const logger = morgan("dev");

@@ -22,8 +22,7 @@ block content
             .manage__list__container 
                 .manage__list__container__new 
                     span 원하는 펌프가 없습니까? 
-                    a(href="pumps/register")
-                        span 펌프 등록하기 &rarr;
+                    a(href="pumps/register").button--big 펌프 등록하기 &rarr;
                 each pump in pumps 
                     +pump(pump) 
 
@@ -32,5 +31,4 @@ block content
                 +pump(pump)
             else 
                 p 등록된 펌프가 없습니다
-                a(href="pumps/register")
-                    span 펌프 등록하기 &rarr;
+                a(href="pumps/register").button--big 펌프 등록하기 &rarr;
