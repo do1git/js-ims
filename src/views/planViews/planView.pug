@@ -5,7 +5,7 @@ block content
     .planView__pumpInfo 
         +pump(plan.model)
         
-    ul.n1s2
+    ul.n1s2(data-file_thumbnail=plan.file_thumbnail,data-file_Paths=file_Paths)
         li 
             div 현재상태 
             div #{plan.status}
@@ -19,28 +19,44 @@ block content
         li 
             div 주문일 
             div #{plan.ordered_date.toLocaleDateString('ko-KR')}
-        li 
-            div 예정 생산일 
-            div #{plan.planned_manufacturing_date.toLocaleDateString('ko-KR')}
-        li 
-            div 실제 생산일
-            if (plan.manufacturing_date) 
-                div #{plan.manufacturing_date.toLocaleDateString('ko-KR')}
-            else
-                div 미생산 제품
-        li 
-            div 예정 출고일 
-            div #{plan.planned_outbound_date.toLocaleDateString('ko-KR')}
-        li 
-            div 실제 출고일 
-            if (plan.outbound_date) 
-                div #{plan.outbound_date.toLocaleDateString('ko-KR')}
-            else 
-                div 미출고 제품
+        div.n1s2--row
+            li 
+                div 예정 생산일 
+                div #{plan.planned_manufacturing_date.toLocaleDateString('ko-KR')}
+            li 
+                div 실제 생산일
+                if (plan.manufacturing_date) 
+                    div #{plan.manufacturing_date.toLocaleDateString('ko-KR')}
+                else
+                    div 미생산 제품
+        div.n1s2--row
+            li 
+                div 예정 출고일 
+                div #{plan.planned_outbound_date.toLocaleDateString('ko-KR')}
+            li 
+                div 실제 출고일 
+                if (plan.outbound_date) 
+                    div #{plan.outbound_date.toLocaleDateString('ko-KR')}
+                else 
+                    div 미출고 제품
+        .n1s2--row 
+            li 
+                div 계획등록
+                if (plan.uploader_plan)
+                    div=plan.uploader_plan
+            li 
+                div 제작완료
+                if (plan.uploader_photo)
+                    div=plan.uploader_photo
+            li 
+                div 출고완료
+                if (plan.uploader_outbound)
+                    div=plan.uploader_outbound
+
 
         li 
             div 생산 담당부서 
-            div #{plan.manufacturing_department}
+            div #{plan.model.department}
         li 
             div 제작 참여직원 
             if (plan.status!="wait") 
@@ -65,15 +81,18 @@ block content
             a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 제작완료<br>하기 &rarr; 
         
         if (loggedInUser.permission_plan&&plan.status=="done")
-            a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 고객사로<br>출고하기 &rarr; 
+            a(href=`/plans/${plan._id}/outbound`).button--big.button--big--restricted 고객사로<br>출고하기 &rarr; 
     
     if plan.file_thumbnail
-        .planView__pictures 
+        .planView__pictures.planView__pictures__thumbnail
             span.header--small 대표사진
             img(src="/"+plan.file_thumbnail)
+            //-a.button--small 대표사진 다운로드 &rarr;
         .planView__pictures 
             span.header--small 사진
             each path in plan.file_Paths
                 img(src="/"+path)
     
     .planView__history 
+
+    //-script(src="/static/dynamics/js/planView.js") 

@@ -1,12 +1,12 @@
 extends ../base
 
 block content 
-    form.s1n2(method="POST",enctype="multipart/form-data")
-        div(data-avatar=user.avatar).avatar
+    form.s1n2(method="POST",enctype="multipart/form-data",data-avatar=user.avatar)
+        div
             label(for="avatar") 사진
             if (user.avatar) 
-                img(src=`/${user.avatar}`,height="150px")
-                input(value="사진 없애기",name="avatar",type="button")
+                img(src=`/${user.avatar}`,height="150px").userEditInfo__form__img
+                //-div.button--small.userEditInfo__form__deletePic 기본사진 &rarr;
             input(id="avatar",name="avatar",type="file",accept="image/*")
         div 
             label(for="name3") 이름 (필수)

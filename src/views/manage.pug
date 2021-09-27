@@ -2,8 +2,8 @@ extends base
 include mixins/pumpMixin
 
 block content 
-    form.s1n2(method="GET")
-        div.manage__searchBar
+    form.s1n2.manage__form(method="GET")
+        div.manage__form__searchBar
             input.uppercase(type="text",name="keyword",placeholder="펌프 모델명을 입력하세요")
             input(type="submit",value="검색")
         hr
@@ -13,22 +13,37 @@ block content
         div
             label(for="motor") 모터종류
             input.uppercase(name="motor",type="text",id="motor")
-
+        div.invisible
+            label(for="department") 제작부서
+            input.uppercase(name="department",type="text",id="department")
         
-    hr
+        
+
+        .manage__form__department
+            p(style="display:none;")
+            div.manage__form__department__big
+                span 대형
+            div.manage__form__department__mini
+                span 미니
+            div.manage__form__department__diaphragm
+                span 다이아프램
+            div.manage__form__department__others
+                span 기타
     hr
     div.manage__list
         if(search)
-            .manage__list__container 
-                .manage__list__container__new 
-                    span 원하는 펌프가 없습니까? 
-                    a(href="pumps/register").button--big 펌프 등록하기 &rarr;
-                each pump in pumps 
-                    +pump(pump) 
+            .manage__list__register 
+                span 원하는 펌프가 없습니까? 
+                a(href="pumps/register").button--small 펌프 등록하기 &rarr;
+            each pump in pumps 
+                +pump(pump) 
 
         else
             each pump in pumps 
                 +pump(pump)
             else 
-                p 등록된 펌프가 없습니다
-                a(href="pumps/register").button--big 펌프 등록하기 &rarr;
+                .manage__list__register 
+                    p 등록된 펌프가 없습니다
+                    a(href="pumps/register").button--small 펌프 등록하기 &rarr;
+
+    script(src="/static/dynamics/js/manage.js")

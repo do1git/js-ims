@@ -1,5 +1,6 @@
 .spanError {
   color: red;
+  font-size: 2rem;
   font-weight: 800;
 }
 .uppercase {
@@ -13,6 +14,11 @@
 .invisible {
   display: none;
 }
+.placeholder--center::placeholder,
+.value--center {
+  text-align: center;
+}
+
 .no__info {
   font-size: 2.3rem;
   font-weight: 700;

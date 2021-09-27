@@ -5,6 +5,8 @@ let milli__manufacturing_date = null;
 let milli__planned_outbound_date = null;
 let milli__outbound_date = null;
 
+const form = document.querySelector("form");
+
 const data__status = document.querySelector(".status").dataset.status;
 const data__ordered_date =
   document.querySelector(".ordered_date").dataset.ordered_date;
@@ -18,6 +20,7 @@ const data__planned_outbound_date = document.querySelector(
 ).dataset.planned_outbound_date;
 const data__outbound_date =
   document.querySelector(".outbound_date").dataset.outbound_date;
+const data__packaging = form.dataset.packaging;
 
 const input__ordered_date = document.querySelector(".ordered_date input");
 const input__planned_manufacturing_date = document.querySelector(
@@ -40,6 +43,10 @@ const button__manufacturing_date = document.querySelector(
 const button__outbound_date = document.querySelector(".outbound_date button");
 const submit = document.querySelector("input[type='submit']");
 const errorSpan = document.querySelector(".jsError");
+
+const options__package = Array.from(
+  document.querySelector("select[name='packaging']")
+);
 
 const restore = () => {
   input__ordered_date.value = data__ordered_date.split("T")[0];
@@ -77,6 +84,12 @@ const restore = () => {
   if (Boolean(data__outbound_date) === true) {
     milli__outbound_date = Date.parse(data__outbound_dates);
   }
+
+  options__package.forEach((e) => {
+    if (e.value === data__packaging) {
+      e.selected = true;
+    }
+  });
 };
 
 const handleButtonClick = (e) => {

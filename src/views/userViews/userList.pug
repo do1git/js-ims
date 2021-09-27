@@ -2,8 +2,9 @@ extends ../base
 include ../mixins/userMixin
 
 block content
-    a(href="/users/create") 
-        div.button--big 새 직원 추가하기&rarr;
+    if (loggedInUser.permission_user==true)
+        a(href="/users/create") 
+            div.button--big 새 직원 추가하기&rarr;
 
     div.userList__user
         each user in users 

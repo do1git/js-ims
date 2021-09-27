@@ -30,6 +30,7 @@ nav {
 }
 
 .header__menu > * {
+  display: block;
   margin: 0 15px;
 }
 
@@ -43,4 +44,7 @@ nav {
   height: 25px;
   width: auto;
   border: 2px #dbdbdb solid;
+}
+.header__currentTab {
+  color: #0035e4;
 }

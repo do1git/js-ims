@@ -11,10 +11,11 @@ const pumpSchema = new mongoose.Schema({
   motor: { type: String, required: true, uppercase: true },
   coating: { type: String, required: true, uppercase: true },
 
+  department: { type: String, required: true },
   version: { type: String, required: true },
   lastEdit: { type: Date },
 
-  domestic: { type: Boolean, required: true },
+  domestic: { type: String, required: true },
 });
 
 // pumpSchema.pre("save", function () {

@@ -19,15 +19,20 @@ block content
             label(for="planned_outbound_date") 예상 출고일 (필수)
             input(required,id="planned_outbound_date",name="planned_outbound_date",type="date")
         span.spanError.jsError.invisible 주문일≤생산일≤출고일 순서를 확인해주세요
-        div
-            label(for="manufacturing_department") 생산부서 (필수)
-            input(required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
+        
         div
             label(for="quantity") 수량 (필수)
             input(required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
         div
             label(for="package") 포장방법 (필수)
-            input(required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
+            select(required,id="package",name="packaging",placeholder="포장을 골라주세요")   
+                option(value="직납") 직납
+                option(value="택배") 택배
+                option(value="EMS") EMS
+                option(value="파레트") 파레트
+                option(value="퀵") 퀵
+                option(value="내사") 내사
+                
         div
             label(for="memo") 특이 기록사항
             input(id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
@@ -35,16 +40,7 @@ block content
             span.spanError=errorMessage
         
         input(type="submit",value="등록하기")
-    
-    datalist#departments
-        option(value="미니")
-        option(value="대형")
-        option(value="다이아프램")
-    datalist#packages
-        option(value="직납") 
-        option(value="택배") 
-        option(value="EMS") 
-        option(value="파레트") 
-        option(value="퀵") 
+
+
         
     script(src="/static/dynamics/js/planRegister.js")

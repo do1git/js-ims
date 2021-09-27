@@ -5,17 +5,15 @@ nav
     
     div.header__menu
         a.header__menu__plan(href="/")
-            .header__memu__plan__box 
-                i.fas.fa-clipboard-list
+            i.fas.fa-clipboard-list
         a.header__menu__done(href="/done")
-            .header__memu__done__box 
-                i.fas.fa-clipboard-check  
+            i.fas.fa-people-carry
+        a.header__menu__outbound(href="/outbound")
+            i.fas.fa-plane-departure 
         a.header__menu__manage(href="/manage")
-            .header__memu__manage__box 
-                i.fas.fa-edit
-        a.header__menu__menu(href="/etc")
-            .header__memu__menu__box 
-                i.fas.fa-bars     
+            i.fas.fa-edit
+        a.header__menu__etc(href="/etc")
+            i.fas.fa-bars     
     
     div.header__user 
         a(href=`/users/${loggedInUser._id}`)

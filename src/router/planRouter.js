@@ -1,12 +1,14 @@
 import express from "express";
 import {
   getDoneRegister,
+  getOutbound,
   getPlanDelete,
   getPlanEdit,
   getPlanRegister,
   getPlanView,
   postDoneRegister,
   postDoneRegister2,
+  postOutbound,
   postPlanDelete,
   postPlanEdit,
   postPlanRegister,
@@ -30,7 +32,7 @@ planRouter
   .get(getPlanView);
 planRouter
   .route("/:id([0-9a-f]{24})/done")
-  .all(protectorMiddleware, protectorMiddleware_plan)
+  .all(protectorMiddleware)
   .get(getDoneRegister)
   .post(uploadFiles.array("photos", 10), postDoneRegister);
 planRouter
@@ -42,6 +44,11 @@ planRouter
   .all(protectorMiddleware)
   .get(getPlanEdit)
   .post(postPlanEdit);
+planRouter
+  .route("/:id([0-9a-f]{24})/outbound")
+  .all(protectorMiddleware)
+  .get(getOutbound)
+  .post(postOutbound);
 planRouter
   .route("/:id([0-9a-f]{24})/delete")
   .all(protectorMiddleware)

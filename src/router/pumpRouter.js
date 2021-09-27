@@ -1,8 +1,10 @@
 import express from "express";
 import {
+  getBand,
   getPumpDelete,
   getPumpEdit,
   getPumpRegister,
+  getPumpRegisterFromBand,
   getPumpView,
   postPumpDelete,
   postPumpEdit,
@@ -30,5 +32,7 @@ pumpRouter
   .all(protectorMiddleware)
   .get(getPumpRegister)
   .post(postPumpRegister);
+
+pumpRouter.route("/band").all(protectorMiddleware).get(getBand);
 
 export default pumpRouter;

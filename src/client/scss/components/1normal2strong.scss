@@ -28,4 +28,20 @@
       font-weight: $font--bold;
     }
   }
+  .n1s2--row {
+    display: flex;
+    flex-direction: row;
+    > * {
+      margin: 0 $element__gap__external;
+      > * {
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin: $element__gap__internal 0;
+      }
+      > *:nth-child(2) {
+        font-size: $font--big;
+        font-weight: $font--bold;
+      }
+    }
+  }
 }

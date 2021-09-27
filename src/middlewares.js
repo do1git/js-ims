@@ -37,7 +37,7 @@ export const localsMiddleware = (req, res, next) => {
 
 export const protectorMiddleware = async (req, res, next) => {
   if (req.session.loggedIn) {
-    console.log("🧑‍🚒protector runs");
+    console.log(`🧑‍🚒protector runs accessed by ${req.session.user.name}`);
 
     const userId = req.session.user._id;
     const events = await Event.find({

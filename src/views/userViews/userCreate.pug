@@ -10,10 +10,25 @@ block content
             input(required,id="name3",name="name3",type="text")
         div 
             label(for="grade") 직급 (필수)
-            input(required,id="grade",name="grade",list="gradeList",placeholder="직급을 선택하세요")
+            select(required,id="grade",name="grade")
+                option(value="사장") 사장
+                option(value="부장") 부장
+                option(value="차장") 차장
+                option(value="과장") 과장
+                option(value="대리") 대리
+                option(value="주임") 주임
+                option(value="사원") 사원
+                option(value="아르바이트") 아르바이트
         div 
             label(for="department") 부서 (필수)
-            input(required,id="department",name="department",list="departmentList",placeholder="부서를 선택하세요")
+            select(required,id="department",name="department")
+                option(value="생산부-미니") 생산부-미니
+                option(value="생산부-대형") 생산부-대형
+                option(value="생산부-다이아프램") 생산부-다이아프램
+                option(value="통합관리부") 통합관리부
+                option(value="연구부") 연구부
+                option(value="영업부-국내") 영업부-국내
+                option(value="영업부-해외") 영업부-해외
         div 
             label(for="email") email
             input(id="email",name="email",type="email")
@@ -40,12 +55,7 @@ block content
         
         input(type="submit",value="등록하기")
         
-        datalist#departmentList 
-            option(value="생산부-미니")
-            option(value="생산부-대형")
-            option(value="생산부-다이아프램")
-            option(value="통합관리부")
-            option(value="연구부")
+
             
         datalist#gradeList
             option(value="사장")

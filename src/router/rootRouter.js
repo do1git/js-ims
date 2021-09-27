@@ -3,14 +3,9 @@ import {
   getDoneList,
   home,
   getManage,
-  postManage,
+  getOutboundList,
 } from "../controller/planController";
-import {
-  getEtc,
-  getLogin,
-  logout,
-  postLogin,
-} from "../controller/userController";
+import { getEtc, getLogin, postLogin } from "../controller/userController";
 import { protectorMiddleware, publicOnlyMiddleware } from "../middlewares";
 
 const rootRouter = express.Router();
@@ -22,8 +17,8 @@ rootRouter
   .get(getLogin)
   .post(postLogin);
 rootRouter.route("/done").all(protectorMiddleware).get(getDoneList);
+rootRouter.route("/outbound").all(protectorMiddleware).get(getOutboundList);
 rootRouter.route("/manage").all(protectorMiddleware).get(getManage);
 rootRouter.route("/etc").all(protectorMiddleware).get(getEtc);
-// rootRouter.get("/logout", logout);
 
 export default rootRouter;

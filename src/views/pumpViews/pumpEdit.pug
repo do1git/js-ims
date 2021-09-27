@@ -1,7 +1,7 @@
 extends ../base
 
 block content 
-    form(method="POST")
+    form.s1n2(method="POST",data-coating=pump.coating,data-department=pump.department,data-domestic=pump.domestic)
         div
             label(for="free_flowRate") 무부하 유량
             input(value=pump.free_flowRate name="free_flowRate",placeholder="10",type="text",required,id="free_flowRate")
@@ -22,23 +22,38 @@ block content
             span 코팅
             div
                 div
-                    input(name="coating",value="p",required,type="radio",id="ptfe")
+                    input(name="coating",value="P",required,type="radio",id="ptfe")
                     label(for="ptfe") PTFE (P)
                 div 
-                    input(name="coating",value="b",type="radio",id="anodize")
+                    input(name="coating",value="B",type="radio",id="anodize")
                     label(for="anodize") 블랙 아노다이징
                 div 
-                    input(name="coating",value="n",type="radio",id="nonCoating")
+                    input(name="coating",value="N",type="radio",id="nonCoating")
                     label(for="nonCoating") N
-            
+        div
+            span 생산부서
+            div
+                div
+                    input(name="department",value="대형",required,type="radio",id="big")
+                    label(for="big") 대형
+                div 
+                    input(name="department",value="미니",type="radio",id="mini")
+                    label(for="mini") 미니
+                div 
+                    input(name="department",value="다이아프램",type="radio",id="diaphragm")
+                    label(for="diaphragm") 다이아프램
+                div 
+                    input(name="department",value="기타",type="radio",id="others")
+                    label(for="others") 기타
+
         div
             span 국내 / 해외
             div 
                 div
-                    input(name="domestic",value="true",required,type="radio",id="domestic")
+                    input(name="domestic",value="국내",required,type="radio",id="domestic")
                     label(for="domestic") 국내
                 div 
-                    input(name="domestic",value="false",type="radio",id="oversea")
+                    input(name="domestic",value="해외",type="radio",id="oversea")
                     label(for="oversea") 해외
 
         div 
@@ -47,14 +62,8 @@ block content
 
         div
             input(type="submit",value="등록하기")
-        
-        div 
-            div
-                span 이전결과: 
-                span 코팅: #{pump.coating} /
-                if (pump.domestic)
-                    span 국내
-                else 
-                    span &nbsp;해외                
+           
     if errorMessage 
         span.spanError=errorMessage
+
+    script(src="/static/dynamics/js/pumpEdit.js") 

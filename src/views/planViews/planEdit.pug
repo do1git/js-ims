@@ -2,7 +2,7 @@ extends ../base
 include ../mixins/pumpMixin
 
 block content    
-    form.s1n2(method="POST")
+    form.s1n2(method="POST",data-packaging=plan.packaging)
     
         div
             span 상태
@@ -12,7 +12,7 @@ block content
                 input(value="done", required,id="done",name="status",type="radio")
                 label(for="done") done(제작완료)
                 input(value="outbound", required,id="outbound",name="status",type="radio")
-                label(for="outbound") OB(출고)
+                label(for="outbound") outbound<br>(출고)
                 
         div
             label(for="approved_id") 승인번호
@@ -40,16 +40,19 @@ block content
             input(id="outbound_date",name="outbound_date",type="date")
             button(type="button") 계획과 같음
         span.spanError.jsError.invisible 주문일≤생산일≤출고일 순서를 확인해주세요<br>(주문일≤생산예정일≤출고예정일)
-
-        div
-            label(for="manufacturing_department") 생산부서
-            input(value=plan.manufacturing_department,required,id="manufacturing_department",name="manufacturing_department",type="text",list="departments",placeholder="부서를 골라주세요")
+        
         div
             label(for="quantity") 수량
             input(value=plan.quantity,required,id="quantity",name="quantity",type="number",placeholder="수량을 입력해주세요")        
         div
-            label(for="package") 포장방법
-            input(value=plan.packaging,required,id="package",name="packaging",type="text",list="packages",placeholder="포장을 골라주세요")        
+            label(for="packaging") 포장방법 
+            select(required,id="packaging",name="packaging",placeholder="포장을 골라주세요",value=plan.packaging)   
+                option(value="직납") 직납
+                option(value="택배") 택배
+                option(value="EMS") EMS
+                option(value="파레트") 파레트
+                option(value="퀵") 퀵
+                option(value="내사") 내사
         div
             label(for="memo") 특이 기록사항
             input(value=plan.memo,id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
@@ -64,17 +67,5 @@ block content
         span 주의사항
         span 1. 되돌릴 수 없습니다. 신중하십시오.
         span 2. 주문일≤생산일≤출고일 순서를 확인하세요.
-
-    
-    datalist#departments
-        option(value="미니")
-        option(value="대형")
-        option(value="다이아프램")
-    datalist#packages
-        option(value="직납") 
-        option(value="택배") 
-        option(value="EMS") 
-        option(value="파레트") 
-        option(value="퀵") 
 
     script(src="/static/dynamics/js/planEdit.js") 

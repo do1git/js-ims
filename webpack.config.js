@@ -5,12 +5,22 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 module.exports = {
   entry: {
     main: "./src/client/js/main.js",
-    planRegister: "./src/client/js/planRegister.js",
-    button__blueBox: "./src/client/js/button__blueBox.js",
+    functions: "./src/client/js/functions.js",
+
+    button__blueBox: "./src/client/js/components/button__blueBox.js",
+    nav: "./src/client/js/components/nav.js",
     container__multiSelection__reverse:
-      "./src/client/js/container__multiSelection__reverse.js",
-    planEdit: "./src/client/js/planEdit.js",
-    userEdit: "./src/client/js/userEdit.js",
+      "./src/client/js/components/container__multiSelection__reverse.js",
+
+    manage: "./src/client/js/screen/root/manage.js",
+
+    planRegister: "./src/client/js/screen/plan/planRegister.js",
+    planEdit: "./src/client/js/screen/plan/planEdit.js",
+    planView: "./src/client/js/screen/plan/planView.js",
+
+    pumpEdit: "./src/client/js/screen/pump/pumpEdit.js",
+
+    userEdit: "./src/client/js/screen/user/userEdit.js",
   },
   watch: true,
   plugins: [

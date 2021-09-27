@@ -15,7 +15,6 @@ const PlanSchema = new mongoose.Schema({
   planned_outbound_date: { type: Date },
   outbound_date: { type: Date },
 
-  manufacturing_department: { type: String, required: true },
   memo: { type: String },
 
   file_Paths: [{ type: String }],
@@ -24,8 +23,9 @@ const PlanSchema = new mongoose.Schema({
   member: [{ type: String }],
   packaging: { type: String, required: true },
 
-  uploader_plan: [{ type: String }],
-  uploader_photo: [{ type: String }],
+  uploader_plan: { type: String },
+  uploader_photo: { type: String },
+  uploader_outbound: { type: String },
 });
 
 const Plan = mongoose.model("Plan", PlanSchema);
