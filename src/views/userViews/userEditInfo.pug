@@ -1,22 +1,48 @@
 extends ../base
 
 block content 
-    form.s1n2(method="POST",enctype="multipart/form-data",data-avatar=user.avatar)
+    form.s1n2.userEdit(method="POST",enctype="multipart/form-data",data-user=user)
         div
             label(for="avatar") 사진
-            if (user.avatar) 
-                img(src=`/${user.avatar}`,height="150px").userEditInfo__form__img
-                //-div.button--small.userEditInfo__form__deletePic 기본사진 &rarr;
+            if (user.avatar=="static/statics/defaultProfile.jpeg") 
+                div.userEdit__avatar__default.userEdit__avatar
+                    img(src=`/static/statics/defaultProfile.jpeg`)
+                    span 기본사진 입니다
+
+            else
+                div.userEdit__avatar
+                    img(src=`/${user.avatar}`)
+                div.button--small.userEdit__avatar__gotoDefault 기본사진으로 &rarr;
+            
             input(id="avatar",name="avatar",type="file",accept="image/*")
+            input(name="avatarDefault",type=text).invisible
+        
         div 
             label(for="name3") 이름 (필수)
             input(value=user.name,required,id="name3",name="name3",type="text")
         div 
             label(for="grade") 직급 (필수)
-            input(value=user.grade,required,id="grade",name="grade",list="gradeList",placeholder="직급을 선택하세요")
+            select(required,id="grade",name="grade")
+                option(value="사장") 사장
+                option(value="부장") 부장
+                option(value="차장") 차장
+                option(value="과장") 과장
+                option(value="대리") 대리
+                option(value="주임") 주임
+                option(value="사원") 사원
+                option(value="아르바이트") 아르바이트        
+                
         div 
             label(for="department") 부서 (필수)
-            input(value=user.department,required,id="department",name="department",list="departmentList",placeholder="부서를 선택하세요")
+            select(required,id="department",name="department")
+                option(value="생산부-미니") 생산부-미니
+                option(value="생산부-대형") 생산부-대형
+                option(value="생산부-다이아프램") 생산부-다이아프램
+                option(value="통합관리부") 통합관리부
+                option(value="연구부") 연구부
+                option(value="영업부-국내") 영업부-국내
+                option(value="영업부-해외") 영업부-해외
+        
         div 
             label(for="email") email
             input(value=user.email,id="email",name="email",type="email")
@@ -33,10 +59,6 @@ block content
                 label(for="permission_plan_true") 허용
                 input(checked,id="permission_plan_false",name="permission_plan",type="radio",value="false")       
                 label(for="permission_plan_false") 허용하지 않음
-            if (user.permission_plan ==true)
-                div 이전기록: 허용
-            else 
-                div 이전기록: 허용하지 않음
         div 
             div 직원 관리권한 (직원 등록/편집) (필수)
             div 
@@ -44,27 +66,9 @@ block content
                 label(for="permission_user_true") 허용
                 input(checked,id="permission_user_false",name="permission_user",type="radio",value="false")       
                 label(for="permission_user_false") 허용하지 않음
-            div 이전기록: #{user.permission_user}
-        
+
         input(type="submit",value="등록하기")
         
-        datalist#departmentList 
-            option(value="생산부-미니")
-            option(value="생산부-대형")
-            option(value="생산부-다이아프램")
-            option(value="통합관리부")
-            option(value="연구부")
-            
-        datalist#gradeList
-            option(value="사장")
-            option(value="부장")
-            option(value="차장")
-            option(value="과장")
-            option(value="대리")
-            option(value="주임")
-            option(value="사원")
-            option(value="아르바이트")
-
     script(src="/static/dynamics/js/userEdit.js") 
 
 

@@ -10,7 +10,7 @@ import {
   postPumpEdit,
   postPumpRegister,
 } from "../controller/pumpController";
-import { protectorMiddleware } from "../middlewares";
+import { protectorMiddleware, protectorMiddleware_plan } from "../middlewares";
 const pumpRouter = express.Router();
 
 pumpRouter
@@ -19,7 +19,7 @@ pumpRouter
   .get(getPumpView);
 pumpRouter
   .route("/:id([0-9a-f]{24})/edit")
-  .all(protectorMiddleware)
+  .all(protectorMiddleware, protectorMiddleware_plan)
   .get(getPumpEdit)
   .post(postPumpEdit);
 // pumpRouter if you needed, you can activate
@@ -29,7 +29,7 @@ pumpRouter
 //   .post(postPumpDelete);
 pumpRouter
   .route("/register")
-  .all(protectorMiddleware)
+  .all(protectorMiddleware, protectorMiddleware_plan)
   .get(getPumpRegister)
   .post(postPumpRegister);
 

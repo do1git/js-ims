@@ -3,7 +3,8 @@
 
 //components
 @import "./components/flash.scss";
-@import "./components/nav.scss";
+@import "./components/partials/nav.scss";
+@import "./components/partials/no__info.scss";
 //@import "./components/form.scss";
 @import "./components/header.scss";
 @import "./components/main.scss";
@@ -19,17 +20,21 @@
 @import "./components/mixin/userMixin.scss";
 
 //screen
-//@import "./screens/pump/pumpView.scss";
+@import "./screens/pump/pumpView.scss";
 
 @import "./screens/plan/planRegister.scss";
-//@import "./screens/plan/doneRegister.scss";
+@import "./screens/plan/doneRegister.scss";
 @import "./screens/plan/manage.scss";
 @import "./screens/plan/home.scss";
+@import "./screens/plan/done.scss";
+@import "./screens/plan/outbound.scss";
 @import "./screens/plan/login.scss";
 @import "./screens/plan/etc.scss";
 @import "./screens/plan/planView.scss";
+@import "./screens/plan/searchPlanDetail.scss";
 
 @import "./screens/user/userList.scss";
+@import "./screens/user/userEdit.scss";
 @import "./screens/user/userView.scss";
 
 html {

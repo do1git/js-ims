@@ -1,25 +1,126 @@
-import { jsDateToKdate, jsYYYYMMDD } from "../middlewares";
+import {
+  funcToday,
+  funcWeekAfter,
+  funcWeekBefore,
+  jsDateToKdate,
+  milliToYYYYMMDD,
+  planToHomePlan,
+} from "../middlewares";
 import Plan from "../models/Plan";
 import Pump from "../models/Pump";
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import PlanLog from "../models/PlanLog";
 
 export const home = async (req, res) => {
-  let plans = await Plan.find({ status: "wait" }).populate("model");
-  let plans_k = [];
-  for (let i = 0; i < plans.length; i++) {
-    let obj = {};
-    obj.planned_manufacturing_date = jsDateToKdate(
-      plans[i].planned_manufacturing_date
-    );
-    obj.planned_outbound_date = jsDateToKdate(plans[i].planned_outbound_date);
-    obj.model = Object(plans[i].model);
-    obj.quantity = plans[i].quantity;
-    obj.id = plans[i]._id;
-    plans_k.push(obj);
+  const today = funcToday();
+  const weekAfter = funcWeekAfter();
+  const weekAfterRender = milliToYYYYMMDD(weekAfter);
+
+  const plans__raw = await Plan.find({
+    status: "wait",
+    planned_manufacturing_date: { $gte: today, $lte: weekAfter },
+  })
+    .populate("model")
+    .sort({ planned_manufacturing_date: "asc" });
+  const plans = planToHomePlan(plans__raw);
+
+  const plans__yet__raw = await Plan.find({
+    status: "wait",
+    planned_manufacturing_date: { $lt: today },
+  })
+    .populate("model")
+    .sort({ planned_manufacturing_date: "desc" });
+  const plans__yet = planToHomePlan(plans__yet__raw);
+
+  return res.render("home", {
+    plans,
+    plans__yet,
+    header: "생산 예정 모델",
+    weekAfterRender,
+  });
+};
+
+export const home_search = async (req, res) => {
+  const { startDate, endDate, department } = req.query;
+  let plans = [];
+  let searchParams;
+  let searchParamsDate;
+  if (Boolean(startDate) && Boolean(endDate)) {
+    searchParamsDate = { $gte: startDate, $lte: endDate };
+  } else if (Boolean(startDate) && !Boolean(endDate)) {
+    searchParamsDate = { $gte: startDate };
+  } else if (!Boolean(startDate) && Boolean(endDate)) {
+    searchParamsDate = { $lte: endDate };
+  } else {
+    const today = funcToday();
+    const weekBefore = funcWeekBefore();
+    searchParamsDate = { $gte: weekBefore, $lte: today };
   }
 
-  return res.render("home", { plans_k, header: "생산 예정 모델" });
+  if (department) {
+    searchParams = {
+      planned_manufacturing_date: searchParamsDate,
+      status: { $in: ["wait", "done"] },
+      department: department,
+    };
+    // console.log(plans_raw);
+    // for (let i = 0; i < plans_raw.length; i++) {
+    //   if (Boolean(plans_raw[i].model)) {
+    //     plans.push(plans_raw[i]);
+    //   }
+    // }
+  } else {
+    searchParams = {
+      planned_manufacturing_date: searchParamsDate,
+      status: { $in: ["wait", "done"] },
+    };
+  }
+  plans = await Plan.find(searchParams).populate("model");
+
+  const plans_k = planToHomePlan(plans);
+
+  res.render("./planViews/searchPlanDetail", {
+    header: "생산예정일 기반 일정 상세검색",
+    plans_k,
+  });
+};
+
+export const outbound_search = async (req, res) => {
+  const { startDate, endDate, department } = req.query;
+  let plans = [];
+  let searchParams;
+  let searchParamsDate;
+  if (Boolean(startDate) && Boolean(endDate)) {
+    searchParamsDate = { $gte: startDate, $lte: endDate };
+  } else if (Boolean(startDate) && !Boolean(endDate)) {
+    searchParamsDate = { $gte: startDate };
+  } else if (!Boolean(startDate) && Boolean(endDate)) {
+    searchParamsDate = { $lte: endDate };
+  } else {
+    const today = Date.now();
+    const weekBefore = today - 1000 * 60 * 60 * 24 * 7;
+    searchParamsDate = { $gte: weekBefore, $lte: today };
+  }
+
+  if (department) {
+    searchParams = {
+      outbound_date: searchParamsDate,
+      department: department,
+    };
+  } else {
+    searchParams = {
+      outbound_date: searchParamsDate,
+    };
+  }
+  plans = await Plan.find(searchParams).populate("model");
+
+  const plans_k = planToHomePlan(plans);
+
+  res.render("./planViews/searchPlanDetail", {
+    header: "출고된 펌프 상세검색",
+    plans_k,
+  });
 };
 
 export const getManage = async (req, res) => {
@@ -87,12 +188,40 @@ export const postPlanRegister = async (req, res) => {
     packaging,
     memo,
   } = req.body;
+  const pump = await Pump.findById(pump_id);
+  const exist = await Plan.findOne({
+    model: pump_id,
+    reference: [],
+    status: "wait",
+    approved_id,
+    department: pump.department,
+    quantity,
+    ordered_date,
+    planned_manufacturing_date,
+    manufacturing_date: null,
+    planned_outbound_date,
+    outbound_date: null,
+    memo,
+    file_Paths: [],
+    file_thumbnail: null,
+    member: [],
+    packaging,
+    uploader_plan: req.session.user.name,
+  });
+  if (exist) {
+    req.flash(
+      "error",
+      `승인번호 '${approved_id}'의 생산/출고계획이 등록돼있습니다`
+    );
+    return res.redirect(`/plans/${exist._id}`);
+  }
   try {
     await Plan.create({
       model: pump_id,
       reference: [],
       status: "wait",
       approved_id,
+      department: pump.department,
       quantity,
       ordered_date,
       planned_manufacturing_date,
@@ -121,6 +250,12 @@ export const postPlanRegister = async (req, res) => {
 export const getPlanView = async (req, res) => {
   const { id } = req.params;
   const plan = await Plan.findById(id).populate("model");
+  if (plan === null) {
+    res.render("404", {
+      plan,
+      errorMessage: "해당 계획이 존재하지 않습니다",
+    });
+  }
   res.render("planViews/planView", {
     plan,
     header: `${plan.model.name} 에 대한 생산/출고계획`,
@@ -133,14 +268,16 @@ export const getDoneRegister = async (req, res) => {
   const worker_db = await User.find({
     department: `생산부-${plan.model.department}`,
   });
+
   const workers = [];
   for (let i = 0; i < worker_db.length; i++) {
     let worker = {};
-    (worker.id = worker_db[i]._id), (worker.name = worker_db[i].name);
+    worker.id = worker_db[i]._id;
+    worker.name = worker_db[i].name;
 
     workers.push(worker);
   }
-  console.log(workers);
+
   res.render("planViews/doneRegister", {
     plan,
     header: `${plan.model.name} 에 대한 사진등록`,
@@ -150,57 +287,71 @@ export const getDoneRegister = async (req, res) => {
 
 export const postDoneRegister = async (req, res) => {
   const { id } = req.params;
-  const { member } = req.body;
+  const { member__assembly, member__inspection, member__package, thumbnail } =
+    req.body;
 
+  let path__thumbnail;
   const filePaths = [];
   req.files.forEach((e) => {
+    if (e.originalname === thumbnail) {
+      path__thumbnail = e.path;
+    }
     const eachPath = e.path;
     filePaths.push(eachPath);
   });
-  await Plan.findByIdAndUpdate(
-    id,
-    { file_Paths: filePaths, member, uploader_photo: req.session.user.name },
-    { new: true }
-  );
-  const plan = await Plan.findById(id).populate("model");
-  res.render("planViews/pickThumb", {
-    plan,
-    header: `${plan.model.name}의 대표사진`,
-  });
-};
 
-export const postDoneRegister2 = async (req, res) => {
-  const plan_id = req.params.id;
-  const mainPic = req.body.mainPic;
-
-  await Plan.findByIdAndUpdate(plan_id, {
-    status: "done",
-    file_thumbnail: mainPic,
+  await Plan.findByIdAndUpdate(id, {
+    file_Paths: filePaths,
+    file_thumbnail: path__thumbnail,
+    member__assembly,
+    member__inspection,
+    member__package,
+    uploader_photo: req.session.user.name,
     manufacturing_date: Date.now(),
+
+    status: "done",
   });
+
   req.flash("success", `출고용 사진등록이 완료되었습니다`);
-  res.redirect("/done");
+  return res.redirect("/done");
 };
+
+// export const postDoneRegister2 = async (req, res) => {
+//   const plan_id = req.params.id;
+//   const mainPic = req.body.mainPic;
+
+//   await Plan.findByIdAndUpdate(plan_id, {
+//     status: "done",
+//     file_thumbnail: mainPic,
+//     manufacturing_date: Date.now(),
+//   });
+//   req.flash("success", `출고용 사진등록이 완료되었습니다`);
+//   res.redirect("/done");
+// };
 
 export const getDoneList = async (req, res) => {
-  const donePlans = await Plan.find({ status: "done" }).populate("model");
+  const today = funcToday();
+  const donePlans__raw = await Plan.find({
+    status: "done",
+    planned_outbound_date: { $gte: today },
+  })
+    .populate("model")
+    .sort({ planned_outbound_date: "asc" });
+  const donePlans = planToHomePlan(donePlans__raw);
 
-  let plans_k = [];
-  for (let i = 0; i < donePlans.length; i++) {
-    let obj = {};
-    obj.planned_manufacturing_date = jsDateToKdate(
-      donePlans[i].planned_manufacturing_date
-    );
-    obj.planned_outbound_date = jsDateToKdate(
-      donePlans[i].planned_outbound_date
-    );
-    obj.model = Object(donePlans[i].model);
-    obj.quantity = donePlans[i].quantity;
-    obj.id = donePlans[i]._id;
-    plans_k.push(obj);
-  }
+  const donePlans__yet__raw = await Plan.find({
+    status: "done",
+    planned_outbound_date: { $lt: today },
+  })
+    .populate("model")
+    .sort({ planned_outbound_date: "desc" });
+  const donePlans__yet = planToHomePlan(donePlans__yet__raw);
 
-  return res.render("home", { plans_k, header: "생산완료 / 출고대기 모델" });
+  return res.render("done", {
+    donePlans,
+    donePlans__yet,
+    header: "생산완료 / 출고대기 모델",
+  });
 };
 
 export const getPlanEdit = async (req, res) => {
@@ -297,21 +448,12 @@ export const postPlanDelete = async (req, res) => {
 };
 
 export const getOutboundList = async (req, res) => {
-  let plans = await Plan.find({ status: "outbound" }).populate("model");
-  let plans_k = [];
-  for (let i = 0; i < plans.length; i++) {
-    let obj = {};
-    obj.planned_manufacturing_date = jsDateToKdate(
-      plans[i].planned_manufacturing_date
-    );
-    obj.planned_outbound_date = jsDateToKdate(plans[i].planned_outbound_date);
-    obj.model = Object(plans[i].model);
-    obj.quantity = plans[i].quantity;
-    obj.id = plans[i]._id;
-    plans_k.push(obj);
-  }
+  let plans = await Plan.find({ status: "outbound" })
+    .populate("model")
+    .sort({ outbound_date: "desc" });
+  const plans_k = planToHomePlan(plans);
 
-  return res.render("home", { plans_k, header: "출고 완료 모델" });
+  return res.render("outbound", { plans_k, header: "출고 완료 모델" });
 };
 
 export const getOutbound = async (req, res) => {
@@ -354,4 +496,27 @@ export const postOutbound = async (req, res) => {
     );
     res.redirect("/outbound");
   }
+};
+export const getPlanEditPic = (req, res) => {
+  res.send("ee");
+};
+
+export const getDailyReport = async (req, res) => {
+  let aimDate;
+  aimDate = req.query.aimDate;
+  if (!aimDate) {
+    aimDate = milliToYYYYMMDD(Date.now());
+  }
+  console.log("--->", aimDate);
+  const register = await Plan.find({ ordered_date: aimDate });
+  const done = await Plan.find({ manufacturing_date: aimDate });
+  const outbound = await Plan.find({ outbound_date: aimDate });
+
+  return res.render("planViews/dailyReport", {
+    header: "일일 작업일지 보기",
+    register,
+    done,
+    outbound,
+    aimDate,
+  });
 };

@@ -4,6 +4,7 @@ import {
   getOutbound,
   getPlanDelete,
   getPlanEdit,
+  getPlanEditPic,
   getPlanRegister,
   getPlanView,
   postDoneRegister,
@@ -23,7 +24,7 @@ const planRouter = express.Router();
 
 planRouter
   .route("/:id([0-9a-f]{24})/register")
-  .all(protectorMiddleware)
+  .all(protectorMiddleware, protectorMiddleware_plan)
   .get(getPlanRegister)
   .post(postPlanRegister);
 planRouter
@@ -31,14 +32,18 @@ planRouter
   .all(protectorMiddleware)
   .get(getPlanView);
 planRouter
+  .route("/:id([0-9a-f]{24})/editPic")
+  .all(protectorMiddleware)
+  .get(getPlanEditPic);
+planRouter
   .route("/:id([0-9a-f]{24})/done")
   .all(protectorMiddleware)
   .get(getDoneRegister)
   .post(uploadFiles.array("photos", 10), postDoneRegister);
-planRouter
-  .route("/:id([0-9a-f]{24})/done2")
-  .all(protectorMiddleware)
-  .post(postDoneRegister2);
+// planRouter
+//   .route("/:id([0-9a-f]{24})/done2")
+//   .all(protectorMiddleware)
+//   .post(postDoneRegister2);
 planRouter
   .route("/:id([0-9a-f]{24})/edit")
   .all(protectorMiddleware)
@@ -54,4 +59,5 @@ planRouter
   .all(protectorMiddleware)
   .get(getPlanDelete)
   .post(postPlanDelete);
+
 export default planRouter;

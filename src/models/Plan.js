@@ -20,7 +20,10 @@ const PlanSchema = new mongoose.Schema({
   file_Paths: [{ type: String }],
   file_thumbnail: { type: String },
 
-  member: [{ type: String }],
+  department: { type: String, required: true },
+  member__assembly: [{ type: String }],
+  member__inspection: [{ type: String }],
+  member__package: [{ type: String }],
   packaging: { type: String, required: true },
 
   uploader_plan: { type: String },

@@ -40,10 +40,10 @@ nav {
   align-items: center;
 }
 .header__user img {
+  border: 2px #dbdbdb solid;
   border-radius: 50%;
   height: 25px;
-  width: auto;
-  border: 2px #dbdbdb solid;
+  width: 25px;
 }
 .header__currentTab {
   color: #0035e4;

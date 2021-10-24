@@ -1,0 +1,16 @@
+.pumpView__history {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .pumpView__history__form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1rem;
+    :nth-child(1) {
+      margin-bottom: 0.5rem;
+    }
+  }
+}

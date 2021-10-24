@@ -1,0 +1,15 @@
+extends ../base
+
+block content
+    form.s1n2(method="post") 
+        div 
+            label(for="before") 변경 전 비밀번호 입력
+            input(id="before",name="before",type="password")
+        div 
+            label(for="after1") 변경 후 비밀번호 입력
+            input(id="after1",name="after1",type="password")
+        div 
+            label(for="after2") 변경 후 비밀번호 한번 더 입력
+            input(id="after2",name="after2",type="password")
+
+        input(type="submit",value="변경하기")

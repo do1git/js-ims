@@ -7,7 +7,7 @@ nav
         a.header__menu__plan(href="/")
             i.fas.fa-clipboard-list
         a.header__menu__done(href="/done")
-            i.fas.fa-people-carry
+            i.fas.fa-boxes
         a.header__menu__outbound(href="/outbound")
             i.fas.fa-plane-departure 
         a.header__menu__manage(href="/manage")
@@ -20,4 +20,4 @@ nav
             if (loggedInUser.avatar==null)
                 img(src="/static/statics/defaultProfile.jpeg",width="30px")
             else
-                img(src=`/${loggedInUser.avatar}`,width="30px")
+                img(src=`/${loggedInUser.avatar}`)

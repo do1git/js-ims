@@ -5,7 +5,7 @@ block content
     .planView__pumpInfo 
         +pump(plan.model)
         
-    ul.n1s2(data-file_thumbnail=plan.file_thumbnail,data-file_Paths=file_Paths)
+    ul.n1s2(data-plan=plan)
         li 
             div 현재상태 
             div #{plan.status}
@@ -45,11 +45,11 @@ block content
                 if (plan.uploader_plan)
                     div=plan.uploader_plan
             li 
-                div 제작완료
+                div 제작등록
                 if (plan.uploader_photo)
                     div=plan.uploader_photo
             li 
-                div 출고완료
+                div 출고등록
                 if (plan.uploader_outbound)
                     div=plan.uploader_outbound
 
@@ -57,12 +57,26 @@ block content
         li 
             div 생산 담당부서 
             div #{plan.model.department}
+
         li 
-            div 제작 참여직원 
+            div 조립 참여직원
             if (plan.status!="wait") 
-                div #{plan.member}
+                div #{plan.member__assembly}
             else 
                 div 미생산 제품
+        li 
+            div 검사 참여직원
+            if (plan.status!="wait") 
+                div #{plan.member__inspection}
+            else 
+                div 미생산 제품
+        li 
+            div 포장 참여직원
+            if (plan.status!="wait") 
+                div #{plan.member__package}
+            else 
+                div 미생산 제품
+
         li 
             div 포장 
             div #{plan.packaging}
@@ -79,20 +93,28 @@ block content
 
         if (plan.status=="wait")
             a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 제작완료<br>하기 &rarr; 
+        if (plan.status=="done")
+            a(href=`/plans/${plan._id}/done`).button--big.button--big--restricted 사진 재등록<br>하기 &rarr; 
         
         if (loggedInUser.permission_plan&&plan.status=="done")
             a(href=`/plans/${plan._id}/outbound`).button--big.button--big--restricted 고객사로<br>출고하기 &rarr; 
     
     if plan.file_thumbnail
-        .planView__pictures.planView__pictures__thumbnail
-            span.header--small 대표사진
-            img(src="/"+plan.file_thumbnail)
-            //-a.button--small 대표사진 다운로드 &rarr;
         .planView__pictures 
-            span.header--small 사진
-            each path in plan.file_Paths
-                img(src="/"+path)
-    
+            span.header--small 출고사진
+            .planView__pictures__container
+                .planView__pictures__container__each.planView__pictures__container__each__king
+                    i.fas.fa-crown
+                    img(src="/"+plan.file_thumbnail)
+                each path in plan.file_Paths
+                    .planView__pictures__container__each
+                        img(src="/"+path)
+                div.planView__pictures__container__each__download
+                    i.fas.fa-cloud-download-alt 
+                    span 사진목록<br>다운로드하기&rarr;
     .planView__history 
 
-    //-script(src="/static/dynamics/js/planView.js") 
+    if plan.file_thumbnail
+        script(src="/static/dynamics/js/planView__download.js") 
+        script(src="/static/dynamics/js/planView__editPic.js") 
+        

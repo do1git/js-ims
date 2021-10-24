@@ -29,7 +29,8 @@
   padding: 0.5rem;
   text-align: center;
 }
-.button--small:active {
+.button--small:active,
+.button--small--selected {
   background-color: $blue__apple;
   font-weight: $font--bold;
 }

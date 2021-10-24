@@ -4,9 +4,9 @@ import bcrypt from "bcrypt";
 import session from "express-session";
 
 export const getEtc = async (req, res) => {
-  console.log(req.session.user);
   res.render("etc", { header: "목록" });
 };
+
 export const getUserView = async (req, res) => {
   const { id } = req.params;
   const user = await User.findOne({ _id: id });
@@ -36,7 +36,7 @@ export const getCreateUser = async (req, res) => {
 export const postCreateUser = async (req, res) => {
   let avatar;
   if (!req.file) {
-    avatar = null;
+    avatar = "static/statics/defaultProfile.jpeg";
   } else {
     avatar = req.file.path;
   }
@@ -72,7 +72,6 @@ export const postCreateUser = async (req, res) => {
         errorMessage: "사용자 사이의 중복된 정보가 있습니다",
       });
     }
-    console.log(error);
     res.render("404", { errorMessage: error });
   }
 };
@@ -108,6 +107,51 @@ export const getLogout = (req, res) => {
   return res.redirect("/login");
 };
 
+export const getUserPwEdit = (req, res) => {
+  return res.render("userViews/userPwEdit", { header: "비밀번호 변경하기" });
+};
+
+export const postUserPwEdit = async (req, res) => {
+  const {
+    session: {
+      user: { _id, password },
+    },
+    params: { id },
+    body: { before, after1, after2 },
+  } = req;
+
+  if (after1 !== after2) {
+    req.flash("error", "새 비밀번호가 일치하지 않습니다");
+    return res.redirect(`/users/${id}/pwEdit`);
+  }
+
+  if (id !== _id) {
+    return res.render("404", {
+      errorMessage: "본인의 계정의 비밀번호만 수정이 가능합니다",
+    });
+  }
+  const ok = await bcrypt.compare(before, password);
+  console.log(password, before);
+  if (!ok) {
+    req.flash("error", "비밀번호가 일치하지 않습니다");
+    return res.redirect(`/users/${id}/pwEdit`);
+  }
+
+  const user = await User.findById(id);
+  user.password = after1;
+  await user.save();
+
+  await Event.create({
+    status: "wait",
+    type: "userInfo-modified",
+    byWhom: _id,
+    toTarget: id,
+    createdAt: Date.now(),
+  });
+  req.flash("success", `비밀번호 변경이 완료되었습니다`);
+  return res.redirect(`/users/${id}`);
+};
+
 export const getUserEditInfo = async (req, res) => {
   const { id } = req.params;
   const user = await User.findById(id);
@@ -128,6 +172,7 @@ export const postUserEditInfo = async (req, res) => {
     permission_plan,
     permission_user,
     birthDay,
+    avatarDefault,
   } = req.body;
   let search = {
     name: name3,
@@ -136,13 +181,14 @@ export const postUserEditInfo = async (req, res) => {
     mobile: mobile,
     permission_plan: permission_plan,
     permission_user: permission_user,
-
     birthDay: birthDay,
     email: email,
   };
   if (req.file) {
     const avatar = req.file.path;
     search.avatar = avatar;
+  } else if (Boolean(avatarDefault)) {
+    search.avatar = "static/statics/defaultProfile.jpeg";
   }
 
   try {

@@ -9,6 +9,8 @@ import {
   postUserEditInfo,
   postUserQuit,
   getLogout,
+  getUserPwEdit,
+  postUserPwEdit,
 } from "../controller/userController";
 import { protectorMiddleware, uploadAvatar } from "../middlewares";
 
@@ -28,7 +30,8 @@ userRouter
 userRouter
   .route("/:id([0-9a-f]{24})/pwEdit")
   .all(protectorMiddleware)
-  .get(getUserView);
+  .get(getUserPwEdit)
+  .post(postUserPwEdit);
 userRouter
   .route("/:id([0-9a-f]{24})/quit")
   .all(protectorMiddleware)

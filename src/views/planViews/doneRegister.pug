@@ -6,18 +6,38 @@ block content
     +pump(plan.model)
 
     form.s1n2(method="post",enctype="multipart/form-data")
-        div
-            label(for="done_photo")
-            input(required,id="done_photo",name="photos",type="file",accept="image/*",multiple="multiple") 
-        
 
         div
-            span 작업에 참여한 멤버를 선택하세요
+            span <조립> 멤버를 선택하세요
             div.container__multiSelection--reverse
                 each worker in workers 
                     div
-                        input.container--invisible(id=`${worker.name}`,name="member",type="checkbox",value=worker.name,checked="false")
-                        label.button--small(for=`${worker.name}`) #{worker.name}
-            //- ㅁㅔㅁ바 만들고 오기
+                        input.container--invisible.worker(id=`ass-${worker.name}`,name="member__assembly",type="checkbox",value=worker.name)
+                        label.button--small(for=`ass-${worker.name}`) #{worker.name}
+        div
+            span <검사> 멤버를 선택하세요
+            div.container__multiSelection--reverse
+                each worker in workers 
+                    div
+                        input.container--invisible.worker(id=`ins-${worker.name}`,name="member__inspection",type="checkbox",value=worker.name)
+                        label.button--small(for=`ins-${worker.name}`) #{worker.name}
+        div
+            span <포장> 멤버를 선택하세요
+            div.container__multiSelection--reverse
+                each worker in workers 
+                    div
+                        input.container--invisible.worker(id=`pac-${worker.name}`,name="member__package",type="checkbox",value=worker.name)
+                        label.button--small(for=`pac-${worker.name}`) #{worker.name}
+
+        div
+            label(for="done_photo") 업로드할 사진 고르기 (최대 10장)
+            input(id="done_photo",name="photos",type="file",accept="image/*",multiple="multiple",required) 
+
+        div 
+            span 대표사진 설정 / 편집
+            div.doneRegister__photoContainer
+
         input(type="submit",value="사진&멤버 등록하기")
+
     script(src="/static/dynamics/js/container__multiSelection__reverse.js") 
+    script(src="/static/dynamics/js/planDoneRegister.js")

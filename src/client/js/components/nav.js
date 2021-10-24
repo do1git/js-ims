@@ -13,14 +13,29 @@ const init = () => {
   switch (path) {
     case "/":
       box.classList.add("header__currentTab");
+      break;
+    case "/home-search":
+      document
+        .querySelector(`.header__menu__plan`)
+        .classList.add("header__currentTab");
+      break;
     case "/done":
       box.classList.add("header__currentTab");
+      break;
     case "/outbound":
       box.classList.add("header__currentTab");
+      break;
+    case "/outbound-search":
+      document
+        .querySelector(`.header__menu__outbound`)
+        .classList.add("header__currentTab");
+      break;
     case "/manage":
       box.classList.add("header__currentTab");
+      break;
     case "/etc":
       box.classList.add("header__currentTab");
+      break;
     default:
   }
 };

@@ -3,15 +3,22 @@
   flex-direction: column;
 }
 
-.banner {
-  font-size: 25px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
-
 .home__list {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+// plan list에 관한 것도 home.scss에서 처리할예정
+
+.plans__list {
+  display: block;
+  width: 100%;
+  font-size: 1.7rem;
+  font-weight: $font--bold;
+
+  i {
+    margin: 0 0.5rem;
+  }
 }

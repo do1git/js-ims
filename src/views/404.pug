@@ -1,6 +1,7 @@
 extends base
 
 block content 
-    h1 404 Error occured
-    if errorMessage 
-        h2=errorMessage
+    div.no__info.searchPlanDetail__no__info 
+        i.fas.fa-exclamation-triangle
+        if errorMessage 
+            span=errorMessage

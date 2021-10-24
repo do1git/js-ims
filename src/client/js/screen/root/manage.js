@@ -7,7 +7,7 @@ const input__user = form.querySelector("input[name='user']");
 const input__motor = form.querySelector("input[name='motor']");
 const input__department = form.querySelector("input[name='department']");
 const ok = window.location.href.split("?")[1];
-console.log(Boolean(ok));
+
 let queries = {};
 
 const restore = () => {
@@ -21,7 +21,6 @@ const restore = () => {
         queries[name] = value;
       }
     });
-    console.log(queries);
   }
   if (queries.keyword) {
     input__keyword.value = queries.keyword;

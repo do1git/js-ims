@@ -8,7 +8,7 @@ html(lang="ko")
         //-link(rel="stylesheet" href="https://unpkg.com/mvp.css")
         link(rel="stylesheet" href="/static/dynamics/css/styles.css")
 
-        title G&M OMS
+        title G&M OMS-#{header}
 
 
 
@@ -18,13 +18,10 @@ html(lang="ko")
 
         main 
             if messages.success
-                div.flash.flash__success
-                    span <i class="fas fa-check-square"></i>
-                    span=messages.success
+                include partials/flash__success
             if messages.error
-                div.flash.flash__error
-                    span <i class="fas fa-exclamation-triangle"></i>
-                    span=messages.error
+                include partials/flash__error
+
             include partials/header
             block content
         

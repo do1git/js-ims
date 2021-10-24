@@ -15,9 +15,15 @@ module.exports = {
     manage: "./src/client/js/screen/root/manage.js",
 
     planRegister: "./src/client/js/screen/plan/planRegister.js",
+    planDoneRegister: "./src/client/js/screen/plan/planDoneRegister.js",
     planEdit: "./src/client/js/screen/plan/planEdit.js",
     planView: "./src/client/js/screen/plan/planView.js",
+    planView__editPic: "./src/client/js/screen/plan/planView__editPic.js",
+    planView__download: "./src/client/js/screen/plan/planView__download.js",
+    goToDetailSearch: "./src/client/js/screen/plan/goToDetailSearch.js",
+    searchPlanDetail: "./src/client/js/screen/plan/searchPlanDetail.js",
 
+    pumpView: "./src/client/js/screen/pump/pumpView.js",
     pumpEdit: "./src/client/js/screen/pump/pumpEdit.js",
 
     userEdit: "./src/client/js/screen/user/userEdit.js",

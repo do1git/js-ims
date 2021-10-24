@@ -1,0 +1,24 @@
+extends base
+include mixins/planMixin
+
+block content 
+    .done
+        div.plans__list
+            i.far.fa-check-square 
+            span 오늘부터의 출고예정모델 (오늘~) 
+        if donePlans
+            .done__list
+                each plan in donePlans
+                    +plan(plan)
+        else 
+            include partials/no__info
+
+        div.plans__list
+            i.far.fa-check-square 
+            span 출고일이 지난 모델 (~전일)
+        if plans_k
+            .done__list
+                each plan in plans_k
+                    +plan(plan)
+        else 
+            include partials/no__info

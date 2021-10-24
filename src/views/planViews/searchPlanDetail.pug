@@ -1,0 +1,28 @@
+extends ../base
+include ../mixins/planMixin
+
+block content 
+    form.searchPlanDetail__form
+        div.searchPlanDetail__form__date
+            div
+                input(type="date",name="startDate")
+                span ~
+                input(type="date",name="endDate")
+            input(name="department",type="text").invisible
+            input(type="submit",value="일정 검색")
+
+        .searchPlanDetail__form__department
+            div.searchPlanDetail__form__department__big 대형
+            div.searchPlanDetail__form__department__mini 미니
+            div.searchPlanDetail__form__department__diaphragm 다이아프램
+            div.searchPlanDetail__form__department__others 기타
+    if plans_k 
+        div
+            each plan in plans_k
+                +plan(plan) 
+    else 
+        div.no__info.searchPlanDetail__no__info 
+            i.fas.fa-exclamation-triangle
+            span 해당 기간의 일정이 없습니다
+
+    script(src="/static/dynamics/js/searchPlanDetail.js") 

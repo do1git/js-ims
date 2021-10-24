@@ -1,28 +1,21 @@
-const checkbox = Array.from(document.querySelectorAll(".container--invisible"));
+const inputs__worker = Array.from(document.querySelectorAll(".worker"));
 
-function colorChange(input, label) {
-  console.log(checkbox);
-  if (input.checked === true) {
-    label.classList.add("button--checked--reverse");
-    input.checked = true;
+const handleWorkerSelection = (i) => {
+  const idName = i.target.id;
+  const label = document.querySelector(`label[for="${idName}"]`);
+  const checked = i.target.checked;
+
+  if (checked) {
+    label.classList.add("button--small--selected");
   } else {
-    label.classList.remove("button--checked--reverse");
-    input.checked = false;
-    delete input.checked;
+    label.classList.remove("button--small--selected");
   }
-  console.log(`ColorChange to ${input.checked}`);
-}
+};
 
-function handlechecked(e) {
-  //e.target.classList;
-  const label = document.querySelector(`label[for="${e.target.id}"]`);
-  colorChange(e.target, label);
-}
-
-function init() {
-  checkbox.forEach((e) => {
-    colorChange(e, document.querySelector(`label[for="${e.id}"]`));
-    e.addEventListener("change", handlechecked);
+const init = () => {
+  inputs__worker.forEach((worker) => {
+    worker.addEventListener("input", handleWorkerSelection);
   });
-}
+};
+
 init();

@@ -1,5 +1,6 @@
 extends ../base
-    
+include ../mixins/planMixin
+
 block content 
     ul.n1s2 
         li
@@ -25,9 +26,27 @@ block content
             div=pump.version 
         
     .button__home--horizontal
-        a(href=`${pump.id}/edit`).button--big.button--big--restricted 수정하기 &rarr;
-
-        a(href=`/plans/${pump.id}/register`).button--big.button--big--restricted 출고계획<br>등록하기&rarr;
+        if (loggedInUser.permission_plan)
+            a(href=`${pump.id}/edit`).button--big.button--big--restricted 수정하기 &rarr;
+    
+            a(href=`/plans/${pump.id}/register`).button--big.button--big--restricted 출고계획<br>등록하기&rarr;
 
     .pumpView__history 
-            
+        span.header--small 이 모델의 역대 출고 일정
+        form.pumpView__history__form
+            div
+                input(type="date",name="startDate")
+                span ~
+                input(type="date",name="endDate")
+                
+            input(type="submit",value="생산예정일 기준 일정 검색") 
+        .pumpView__history__plans
+            if plans
+                .home__list
+                    each plan in plans
+                        +plan(plan)
+            else 
+                include ../partials/no__info
+
+    script(src="/static/dynamics/js/pumpView.js") 
+

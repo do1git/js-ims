@@ -1,0 +1,38 @@
+extends ../base
+include ../mixins/planMixin
+
+block content 
+    .dailyReport 
+        form.s1n2
+            div 
+                label 일자를 선택해주세요
+                input(type="date",name="date",value=aimDate)
+            input(type="submit",value="불러오기")
+        
+        .dailyReport__list 
+            .dailyReport__list__register
+                div.plans__list
+                    i.far.fa-check-square 
+                    span 등록된 일정
+                each plan in register
+                    +plan(plan)
+                else 
+                    include ../partials/no__info 
+
+            .dailyReport__list__done
+                div.plans__list
+                    i.far.fa-check-square 
+                    span 제작 완료된 일정
+                each plan in done
+                    +plan(plan)
+                else 
+                    include ../partials/no__info 
+
+            .dailyReport__list__outbound
+                div.plans__list
+                    i.far.fa-check-square 
+                    span 출고된 일정
+                each plan in outbound
+                    +plan(plan)
+                else 
+                    include ../partials/no__info 

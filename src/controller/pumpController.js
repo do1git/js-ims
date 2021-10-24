@@ -1,5 +1,7 @@
 import Pump from "../models/Pump";
 import fetch from "node-fetch";
+import Plan from "../models/Plan";
+import { planToHomePlan } from "../middlewares";
 
 export const getPumpRegister = (req, res) => {
   res.render("pumpViews/pumpRegister", { header: "새로운 모델 등록하기" });
@@ -17,6 +19,23 @@ export const postPumpRegister = async (req, res) => {
     version,
   } = req.body;
   const codeUp = code.toUpperCase();
+  const exist = await Pump.findOne({
+    free_flowRate,
+    code: codeUp,
+    name: free_flowRate + code,
+    user,
+    motor,
+    coating,
+    department,
+    domestic,
+    version,
+  });
+
+  if (exist) {
+    req.flash("error", `${free_flowRate + codeUp} 모델이 이미 등록돼있습니다`);
+    return res.redirect(`/pumps/${exist._id}`);
+  }
+
   try {
     await Pump.create({
       free_flowRate,
@@ -33,7 +52,6 @@ export const postPumpRegister = async (req, res) => {
     req.flash("success", `${free_flowRate + codeUp} 모델이 등록되었습니다`);
     return res.redirect("/manage");
   } catch (error) {
-    console.log(error);
     return res
       .status(400)
       .render("pumpViews/pumpRegister", { errorMessage: "< 등록오류발생 >" });
@@ -71,12 +89,42 @@ export const getBand = async (req, res) => {
 
 export const getPumpView = async (req, res) => {
   const { id } = req.params;
+  const { startDate, endDate } = req.query;
+  let searchParamsDate;
+  let plans__raw;
+
+  if (Boolean(startDate) || Boolean(endDate)) {
+    if (Boolean(startDate) && Boolean(endDate)) {
+      searchParamsDate = { $gte: startDate, $lte: endDate };
+    } else if (Boolean(startDate) && !Boolean(endDate)) {
+      searchParamsDate = { $gte: startDate };
+    } else if (!Boolean(startDate) && Boolean(endDate)) {
+      searchParamsDate = { $lte: endDate };
+    }
+    plans__raw = await Plan.find({
+      model: id,
+      planned_manufacturing_date: searchParamsDate,
+    })
+      .sort({
+        planned_manufacturing_date: "desc",
+      })
+      .populate("model");
+  } else {
+    plans__raw = await Plan.find({ model: id })
+      .sort({ planned_manufacturing_date: "desc" })
+      .limit(10)
+      .populate("model");
+  }
+
   const pump = await Pump.findById(id);
+  const plans = planToHomePlan(plans__raw);
+
   if (!pump) {
     return res.status(404).render("404");
   }
   return res.render("pumpViews/pumpView", {
     pump,
+    plans,
     header: `${pump.name} 의 상세정보`,
   });
 };

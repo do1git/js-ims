@@ -1,16 +1,25 @@
 mixin plan(info)
     a(href=`/plans/${info.id}`).planMixin__container
-        div.planMixin__container__user
-            span=info.model.user
+        if info.model.user
+            div.planMixin__container__user
+                span=info.model.user
 
-        div.planMixin__container__model
-            span=info.model.name 
-            span /
-            span=info.model.coating 
-            span /
-            span=info.model.motor 
-            span -
-            span #{info.quantity}대
-        
-        div.planMixin__container__date
-            span 생산예정: #{info.planned_manufacturing_date} / 출고예정: #{info.planned_outbound_date}
+            div.planMixin__container__model
+                span=info.model.name 
+                span /
+                span=info.model.coating 
+                span /
+                span=info.model.motor 
+                span -
+                span #{info.quantity}대
+
+            div.planMixin__container__date
+                if info.status=="wait"
+                    span 생산예정: #{info.planned_manufacturing_date} / 출고예정: #{info.planned_outbound_date}
+                else if info.status=="done"
+                    span 실제생산: #{info.manufacturing_date} / 출고예정: #{info.planned_outbound_date}
+                else if info.status=="outbound"
+                    span 실제생산: #{info.manufacturing_date} / 실제출고: #{info.outbound_date}
+        else 
+            div.planMixin__container__model
+                span 모델이 존재하지 않습니다
