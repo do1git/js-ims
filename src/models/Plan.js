@@ -25,6 +25,7 @@ const PlanSchema = new mongoose.Schema({
   member__inspection: [{ type: String }],
   member__package: [{ type: String }],
   packaging: { type: String, required: true },
+  extra: [{ type: String }],
 
   uploader_plan: { type: String },
   uploader_photo: { type: String },

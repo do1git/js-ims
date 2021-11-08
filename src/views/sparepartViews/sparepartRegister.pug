@@ -1,0 +1,14 @@
+extends ../base
+
+block content 
+    form.s1n2(enctype="multipart/form-data",method="POST")
+    
+        div 
+            label(for="file") 사진등록
+            input(id="file",type="file",name="file")
+        
+        div 
+            label(for="name") 모델명 (필수)
+            input(id="name",type="text",name="name",required)
+    
+        input(type="submit",value="등록하기")

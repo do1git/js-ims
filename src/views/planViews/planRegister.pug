@@ -5,7 +5,7 @@ block content
     +pump(pump)
 
 
-    form.s1n2(method="POST")
+    form.s1n2(method="POST",data-spareparts=spareparts)
         div
             label(for="approved_id") 승인번호 (필수)
             input(required,id="approved_id",name="approved_id",type="text",placeholder="21001")
@@ -36,6 +36,18 @@ block content
         div
             label(for="memo") 특이 기록사항
             input(id="memo",name="memo",type="text",placeholder="간단한 기록사항")       
+
+        div 
+            label(for="spart") 소모품
+            select(id="spart")
+                option(value=null) 선택해주세요
+                each spart in spareparts 
+                    option(value=spart._id)=spart.name
+        div(id="spartList", style="width:300px;")
+        
+        div.invisible
+            input(id="extra",name="extra",type="text")       
+        
         if errorMessage 
             span.spanError=errorMessage
         
@@ -44,3 +56,4 @@ block content
 
         
     script(src="/static/dynamics/js/planRegister.js")
+    script(src="/static/dynamics/js/planExtra.js")

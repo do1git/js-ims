@@ -27,6 +27,17 @@ export const uploadAvatar = multer({
     },
   }),
 });
+export const uploadSparepart = multer({
+  storage: multer.diskStorage({
+    destination: (req, file, cb) => {
+      const dirPath = `uploads/sparepart/`;
+      cb(null, dirPath);
+    },
+    filename: (req, file, cb) => {
+      cb(null, new Date().valueOf() + path.extname(file.originalname));
+    },
+  }),
+});
 
 export const localsMiddleware = (req, res, next) => {
   res.locals.loggedIn = Boolean(req.session.loggedIn);
@@ -166,4 +177,10 @@ export const milliToYYYYMMDD = (milli) => {
   const mm = d.getMonth() + 1 < 10 ? `0${d.getMonth() + 1}` : d.getMonth() + 1;
   const dd = d.getDate() < 10 ? `0${d.getDate()}` : d.getDate();
   return `${yyyy}-${mm}-${dd}`;
+};
+
+export const handle404 = (req, res, next) => {
+  res
+    .status(404)
+    .render("404", { errorMessage: "해당 페이지가 존재하지않습니다" });
 };

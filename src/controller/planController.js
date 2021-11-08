@@ -11,6 +11,8 @@ import Pump from "../models/Pump";
 import User from "../models/User";
 import bcrypt from "bcrypt";
 import PlanLog from "../models/PlanLog";
+import Sparepart from "../models/Sparepart";
+import PlanExtra from "../models/PlanExtra";
 
 export const home = async (req, res) => {
   const today = funcToday();
@@ -169,10 +171,13 @@ export const getManage = async (req, res) => {
 export const getPlanRegister = async (req, res) => {
   const { id } = req.params;
   const pump = await Pump.findById(id);
+  const spareparts = await Sparepart.find({});
+
   if (!pump)
     return res.render("404", { errorMessage: "해당 모델이 존재하지 않습니다" });
   res.render("planViews/planRegister", {
     pump,
+    spareparts,
     header: `${pump.name}의 생산/출고계획 등록`,
   });
 };
@@ -187,7 +192,14 @@ export const postPlanRegister = async (req, res) => {
     quantity,
     packaging,
     memo,
+    extra,
   } = req.body;
+
+  const array__extra = extra.split(",");
+  // array__extra.forEach((e) => {
+  // //   await PlanExtra.create({});
+  // // });
+
   const pump = await Pump.findById(pump_id);
   const exist = await Plan.findOne({
     model: pump_id,
@@ -503,15 +515,17 @@ export const getPlanEditPic = (req, res) => {
 
 export const getDailyReport = async (req, res) => {
   let aimDate;
-  aimDate = req.query.aimDate;
+  aimDate = req.query.date;
   if (!aimDate) {
     aimDate = milliToYYYYMMDD(Date.now());
   }
-  console.log("--->", aimDate);
-  const register = await Plan.find({ ordered_date: aimDate });
-  const done = await Plan.find({ manufacturing_date: aimDate });
-  const outbound = await Plan.find({ outbound_date: aimDate });
+  const param = new Date(aimDate);
+  console.log("--->", param);
+  const register = await Plan.find({ ordered_date: param });
+  const done = await Plan.find({ manufacturing_date: param });
+  const outbound = await Plan.find({ outbound_date: param });
 
+  console.log(done);
   return res.render("planViews/dailyReport", {
     header: "일일 작업일지 보기",
     register,

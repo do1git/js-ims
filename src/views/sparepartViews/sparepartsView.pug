@@ -1,0 +1,12 @@
+extends ../base
+include ../mixins/planExtra
+
+block content
+    .sparepartsView__menu.menuBar__pageDiv
+        a(href="sparepart/register") 
+            i.fas.fa-plus-circle
+            span 소모품 추가하기
+     
+    if spareparts 
+        each spart in spareparts 
+            +planExtra(spart) 

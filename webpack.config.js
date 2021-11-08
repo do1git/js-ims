@@ -9,6 +9,7 @@ module.exports = {
 
     button__blueBox: "./src/client/js/components/button__blueBox.js",
     nav: "./src/client/js/components/nav.js",
+    planExtra: "./src/client/js/components/planExtra.js",
     container__multiSelection__reverse:
       "./src/client/js/components/container__multiSelection__reverse.js",
 

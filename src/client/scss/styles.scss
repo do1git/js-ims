@@ -14,10 +14,12 @@
 @import "./components/containers.scss";
 @import "./components/button.scss";
 @import "./components/little.scss";
+@import "./components/pageMenuBar.scss";
 
 @import "./components/mixin/pumpMixin.scss";
 @import "./components/mixin/planMixin.scss";
 @import "./components/mixin/userMixin.scss";
+@import "./components/mixin/planExtraMixin.scss";
 
 //screen
 @import "./screens/pump/pumpView.scss";
@@ -36,6 +38,8 @@
 @import "./screens/user/userList.scss";
 @import "./screens/user/userEdit.scss";
 @import "./screens/user/userView.scss";
+
+@import "./screens/sparepart/sparepartsView.scss";
 
 html {
   display: flex;

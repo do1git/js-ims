@@ -11,6 +11,8 @@ import {
   postPumpRegister,
 } from "../controller/pumpController";
 import { protectorMiddleware, protectorMiddleware_plan } from "../middlewares";
+import app from "../server";
+import sparepartRouter from "./sparepartsRouter";
 const pumpRouter = express.Router();
 
 pumpRouter
@@ -34,5 +36,7 @@ pumpRouter
   .post(postPumpRegister);
 
 pumpRouter.route("/band").all(protectorMiddleware).get(getBand);
+
+pumpRouter.use("/sparepart", sparepartRouter);
 
 export default pumpRouter;
